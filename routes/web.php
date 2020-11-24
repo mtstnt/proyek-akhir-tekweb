@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,12 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->middleware('auth');
+Route::get('/', [ShopController::class, 'index']);
 
 Route::prefix('auth')->group(function() {
 	Route::get('/', function() { return redirect()->route("auth/login"); });
 	Route::get('login', [AuthController::class, "login"])->name("auth/login");
 	Route::get('register', [AuthController::class, "register"])->name("auth/register");
+	Route::get('logout', [AuthController::class, "logout"])->name("auth/logout");
+
+	Route::post('login', [AuthController::class, "checkLogin"])->name("auth/checkLogin");
 });

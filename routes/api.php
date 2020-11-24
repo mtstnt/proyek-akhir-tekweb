@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ShopController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Api endpoint utk get data item
+Route::get('/items/{id}', [ShopController::class, 'getItemData'])->where('id', '[0-9]+');
+
+// Api endpoint utk push, delete data dari cart
+Route::middleware('auth:api')->post('/cart', [ShopController::class, 'getCartData']);
+Route::middleware('auth:api')->post('/cart', [ShopController::class, 'updateItemCountInCart']);
+Route::middleware('auth:api')->put('/cart', [ShopController::class, 'addItemToCart']);
+Route::middleware('auth:api')->delete('/cart', [ShopController::class, 'removeItemFromCart']);
