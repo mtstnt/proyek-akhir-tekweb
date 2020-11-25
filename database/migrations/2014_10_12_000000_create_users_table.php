@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
 			$table->string('password');
             $table->string('level')->default(0);
 			$table->string('credit_points')->default(0);
-            $table->rememberToken();
+			$table->string('avatar')->nullable();
             $table->timestamps();
         });
     }

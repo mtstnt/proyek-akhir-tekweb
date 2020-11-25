@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [ShopController::class, 'index']);
+Route::get('/', [ShopController::class, 'index'])->name("/");
 
 Route::prefix('auth')->group(function() {
 	Route::get('/', function() { return redirect()->route("auth/login"); });
@@ -25,4 +26,9 @@ Route::prefix('auth')->group(function() {
 
 	Route::post('login', [AuthController::class, "checkLogin"])->name("auth/checkLogin");
 	Route::post('register', [AuthController::class, "checkRegister"])->name("auth/checkRegister");
+});
+
+Route::prefix('user')->group(function() {
+	Route::get('/', function() { return redirect()->route("user/profile"); });
+	Route::get('profile', [UserController::class, "profile"])->name("user/profile");
 });

@@ -6,8 +6,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-use function Symfony\Component\VarDumper\Dumper\esc;
-
 class AuthController extends Controller
 {
 	// Untuk masuk ke AuthController, harus sudah login dulu
