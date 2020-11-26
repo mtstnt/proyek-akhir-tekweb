@@ -1,47 +1,56 @@
 @extends('layout/app')
 
 @section('after-head')
-	<style>
-		body {
-			overflow:hidden;
-		}
+<style>
+	body {
+		overflow: hidden;
+	}
 
-		.side-image {
-			height: 100vh;
-		}
-	</style>
+	.side-image {
+		height: 100vh;
+	}
+</style>
 @endsection
 
 @section('body')
-	<div class="d-xl-none d-xs-block">
-		<div class="row">
-			<form class="col-8 mx-auto" action="{{ route('auth/checkLogin') }}" method="POST">
-				<h1 class="display-4">Login</h1>
-				<label for="input-email">Email</label>
-				<input class="form-control" type="email" name="input-email" id="input-email">
-				<label for="input-password">Password</label>
-				<input class="form-control" type="password" name="input-password" id="input-password">
-				<button type="submit">Submit</button>
-				@csrf()
-			</form>
-		</div>
-	</div>
-
-	<div class="d-none d-xl-block">
-		<div class="row">
-			<div class="col-8 bg-primary side-image">
-			</div>
-			<form class="col-4 mx-auto p-5" action="{{ route('auth/checkLogin') }}" method="POST">
-				<div class="col-12 mx-auto">
-					<h1 class="font-weight-bold">Sign In</h1>
-					<label for="input-email">Email</label>
-					<input class="form-control" type="email" name="input-email" id="input-email">
-					<label for="input-password">Password</label>
-					<input class="form-control" type="password" name="input-password" id="input-password">
-					<button class="btn btn-primary d-block w-100 my-3" type="submit">Submit</button>
-					@csrf()
+<div class="container">
+	<div class="row">
+		<div class="col-lg-12 col-sm-4 m-auto">
+			<div class="card bg-white mt-5" style="border-radius:25px">
+				<div class="card-title text-white mt-5">
+					<h1 class="text-center py-3 text-dark font-weight-bold" ,
+						style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;font-size:50px">
+						Login Page</h1>
 				</div>
-			</form>
+
+				<?php
+				if (@$_GET['Empty'] == true) {
+				?>
+				<div class="alert-white text-danger text-center py-3"><?php echo $_GET['Empty'] ?></div>
+				<?php
+				}
+				?>
+
+
+				<?php
+				if (@$_GET['Invalid'] == true) {
+				?>
+				<div class="alert-white text-danger text-center py-3"><?php echo $_GET['Invalid'] ?></div>
+				<?php
+				}
+				?>
+
+				<div class="card-body text-center">
+					<form action="process.php" method="post">
+						<input type="text" name="e_mail" placeholder=" E-mail" class="form-control mb-3">
+						<input type="password" name="Password" placeholder=" Password" class="form-control mb-3">
+						<button class="btn text-white bg-warning mt-3 font-weight-bold"
+							style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;font-size:20px"
+							name="Login">Login</button>
+					</form>
+				</div>
+			</div>
 		</div>
 	</div>
+</div>
 @endsection

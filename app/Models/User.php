@@ -42,8 +42,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
 	];
-	
-	public function joinCart() {
-		return DB::table('users')->join('carts', 'carts.user_id', '=', 'user.id', 'inner', true);
+
+	public function carts() {
+		return $this->belongsToMany("App\Models\Cart", "users", "id", "id");
 	}
 }

@@ -17,10 +17,13 @@ class CreateCartsTable extends Migration
             $table->id();
 			$table->string('cart_id')->unique();
 			$table->unsignedBigInteger('user_id');
-			$table->unsignedDouble('price');
+			$table->unsignedBigInteger('item_id');
 			$table->unsignedInteger('stock');
-            $table->timestamps();
-			$table->foreign('user_id')->references('id')->on('users');
+			$table->boolean("is_checked_out")->default(false);
+			$table->timestamps();
+			
+			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+			$table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
         });
     }
 
