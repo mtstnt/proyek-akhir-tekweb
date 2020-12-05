@@ -18,7 +18,6 @@ class UserController extends Controller
 
     public function history() 
     {
-        
         return view("user/history", [
             'title' => "History: " . Auth::user()->first_name . " " . Auth::user()->last_name,
         ]);

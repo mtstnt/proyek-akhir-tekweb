@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
@@ -25,7 +26,8 @@ Route::prefix('auth')->group(function() {
 	Route::get('/', function() { return redirect()->route("auth/login"); });
 	Route::get('login', [AuthController::class, "login"])->name("auth/login");
 	Route::get('register', [AuthController::class, "register"])->name("auth/register");
-    Route::get('logout', [AuthController::class, "logout"])->name("auth/logout");
+	Route::get('logout', [AuthController::class, "logout"])->name("auth/logout");
+	Route::get('autologin/{mode}', [AuthController::class, "guestLogin"]);
 
 	Route::post('login', [AuthController::class, "checkLogin"])->name("auth/checkLogin");
 	Route::post('register', [AuthController::class, "checkRegister"])->name("auth/checkRegister");
@@ -35,4 +37,8 @@ Route::prefix('user')->group(function() {
 	Route::get('/', function() { return redirect()->route("user/profile"); })->middleware('auth');
     Route::get('profile', [UserController::class, "profile"])->name("user/profile")->middleware('auth');
     Route::get('cart', [UserController::class, "viewCart"])->name("user/cart")->middleware('auth');
+});
+
+Route::prefix('admin')->group(function() {
+	Route::get('/', [AdminController::class, "index"])->middleware('admin_only')->name('admin/index');
 });

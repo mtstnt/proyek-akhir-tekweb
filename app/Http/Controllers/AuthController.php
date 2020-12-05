@@ -89,6 +89,25 @@ class AuthController extends Controller
 	public function logout() 
 	{
 		Auth::logout();
-		return redirect()->back();
+		return redirect('auth/login');
+	}
+
+	public function guestLogin($mode) 
+	{
+		if ($mode == 1) {
+			if (!Auth::attempt([
+				'email' => "admin@memeail.com",
+				'password' => "admin123"
+			])) {
+				echo "HAHAH";
+			}
+		} else {
+			if (!Auth::attempt([
+				'email' => "yolanda.kalim@sudiati.biz",
+				'password' => "12345"
+			])) {
+				echo "HAHAH";
+			}
+		}
 	}
 }
