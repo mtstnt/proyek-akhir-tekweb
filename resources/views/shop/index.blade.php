@@ -63,47 +63,8 @@
 							class='fas fa-angle-double-right'></i></button>
 				</div>
 			</div>
-		</div>
-		<div class="card-deck mt-4">
-			<div class="card">
-				<img src="storage/store/woman.jpeg" class="card-img-top" alt="..." style="height:450px">
-				<div class="card-body">
-					<h5 class="card-title">Shop Wanita</h5>
-					<p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-						additional content. This content is a little bit longer.</p>
-				</div>
-				<div class="card-footer text-center">
-					<button style='font-size:20px;' class="text-dark">Check it now <i
-							class='fas fa-angle-double-right'></i></button>
-				</div>
-			</div>
-			<div class="card">
-				<img src="storage/store/men.jpeg" class="card-img-top" alt="..." style="height:450px">
-				<div class="card-body">
-					<h5 class="card-title">Shop Pria</h5>
-					<p class="card-text">This card has supporting text below as a natural lead-in to additional content.
-					</p>
-				</div>
-				<div class="card-footer text-center">
-					<button style='font-size:20px;' class="text-dark">Check it now <i
-							class='fas fa-angle-double-right'></i></button>
-				</div>
-			</div>
-			<div class="card">
-				<img src="storage/store/kids.jpg" class="card-img-top" alt="..." style="height:450px">
-				<div class="card-body">
-					<h5 class="card-title">Shop Anak-anak</h5>
-					<p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-						additional content. This card has even longer content than the first to show that equal height
-						action.</p>
-				</div>
-				<div class="card-footer text-center">
-					<button style='font-size:20px;' class="text-dark">Check it now <i
-							class='fas fa-angle-double-right'></i></button>
-				</div>
-			</div>
-		</div>
-	</div>
+        </div>
+    </div>
 	<div class="container mt-5">
 		<div class="row">
 			<div class="span12">

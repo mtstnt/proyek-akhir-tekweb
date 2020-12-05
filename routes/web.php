@@ -16,19 +16,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [ShopController::class, 'index'])->name("/");
+Route::get('/', [ShopController::class, 'index'])->name("main");
+Route::get('catalog', [ShopController::class, 'displayAll'])->name('main/display');
+Route::get('checkout', [ShopController::class, 'checkout'])->name('main/checkout');
 
 Route::prefix('auth')->group(function() {
 	Route::get('/', function() { return redirect()->route("auth/login"); });
 	Route::get('login', [AuthController::class, "login"])->name("auth/login");
 	Route::get('register', [AuthController::class, "register"])->name("auth/register");
-	Route::get('logout', [AuthController::class, "logout"])->name("auth/logout");
+    Route::get('logout', [AuthController::class, "logout"])->name("auth/logout");
 
 	Route::post('login', [AuthController::class, "checkLogin"])->name("auth/checkLogin");
 	Route::post('register', [AuthController::class, "checkRegister"])->name("auth/checkRegister");
 });
 
 Route::prefix('user')->group(function() {
-	Route::get('/', function() { return redirect()->route("user/profile"); });
-	Route::get('profile', [UserController::class, "profile"])->name("user/profile");
+	Route::get('/', function() { return redirect()->route("user/profile"); })->middleware('auth');
+    Route::get('profile', [UserController::class, "profile"])->name("user/profile")->middleware('auth');
+    Route::get('cart', [UserController::class, "viewCart"])->name("user/cart")->middleware('auth');
 });

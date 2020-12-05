@@ -10,10 +10,15 @@ class ShopController extends Controller
 {
 	public function index()
 	{
-		$items = ShopItem::all();
-
 		return view("shop/index", [
-			'title' => "Shop Catalog",
+			'title' => "Shop Catalog"
+		]);
+	}
+
+	public function displayAll() {
+		$items = ShopItem::all();
+		return view('shop/display', [
+			'title' => "Shop catalog",
 			'items' => $items
 		]);
 	}
@@ -94,5 +99,22 @@ class ShopController extends Controller
 			'message' => "Failed parsing request data!",
 			'result' => false
 		])->header('Content-Type', 'application/json');
-	}
+    }
+
+    // API get
+    public function getCartItems() 
+    {
+		if (request()->isJson()) {
+                
+			return response([
+				'status' => 200,
+				'result' => true
+			])->header('Content-Type', 'application/json');
+		}
+		return response([
+			'status' => 200,
+			'message' => "Failed parsing request data!",
+			'result' => false
+		])->header('Content-Type', 'application/json');
+    }
 }

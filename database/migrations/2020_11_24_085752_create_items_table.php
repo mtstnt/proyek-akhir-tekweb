@@ -20,8 +20,12 @@ class CreateItemsTable extends Migration
 			$table->string('item_description')->nullable();
 			$table->unsignedDouble('price');
 			$table->unsignedInteger('stock');
+			$table->unsignedBigInteger("category_id");
 			$table->string("item_image")->nullable();
-            $table->timestamps();
+
+			$table->timestamps();
+
+			$table->foreign("category_id")->references("id")->on("categories")->onDelete("cascade");
         });
     }
 

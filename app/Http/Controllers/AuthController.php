@@ -30,7 +30,7 @@ class AuthController extends Controller
 			$d = str_replace(' ', '', $d);
 			$d = htmlentities($d);
 		}
-
+        
 		$attemptData = [
 			'email' => $datas['input-email'],
 			'password' => $datas['input-password']
@@ -38,7 +38,8 @@ class AuthController extends Controller
 
 		if (Auth::attempt($attemptData)) {
 			return redirect()->intended('/');
-		}
+        }
+        session()->flash("error", "Incorrect login credentials!");
 		return redirect()->route('auth/login');
 	}
 

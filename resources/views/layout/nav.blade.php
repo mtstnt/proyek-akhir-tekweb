@@ -43,20 +43,23 @@
 
 <nav class="navbar navbar-expand-lg bg-light navbar-light fixed-top">
     <!-- Brand/logo -->
-    <a class="navbar-brand" href="{{ route('/') }}">
+    <a class="navbar-brand" href="{{ route('main') }}">
         <img src="/storage/common/logo.png" alt="Logo" style="width:80px;height: 50px">
     </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#to-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
     <!-- Links -->
-    <a class="nav-link text-dark" href="{{ route('/') }}"
+    <a class="nav-link text-dark" href="{{ route('main') }}"
         style="font-size: 30px;font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">
-        MATTHEW STORE
+        TOKOBAJU.COM
     </a>
-    <ul class="navbar-nav navbar-collapse">
+    <ul class="navbar-nav navbar-collapse d-none d-xl-block" id="to-collapse">
         <li class="nav-item">
-            <a class="nav-link text-dark" href="{{ route('/') }}">Store</a>
+            <a class="nav-link text-dark" href="{{ route('main') }}">Store</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" href="#">News & Promo</a>
+            <a class="nav-link text-dark" href="{{ route('main') }}">News & Promo</a>
         </li>
     </ul>
     <div class="dropdown mx-1">
@@ -67,7 +70,7 @@
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" id="listMenu">
 			@if (Auth::check())
 				<a class="dropdown-item" href="{{ route('user/profile') }}">Profile</a>
-				<a class="dropdown-item" href="{{ /*route('user/cart')*/"" }}">Shopping Cart</a>
+				<a class="dropdown-item" href="{{ route('user/cart') }}">Shopping Cart</a>
 				<a class="dropdown-item" href="{{ route('auth/logout') }}">Logout</a>
             @else
 				<a class="dropdown-item" href="{{ route('auth/login') }}">Login</a>

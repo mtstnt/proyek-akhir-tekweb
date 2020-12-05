@@ -17,4 +17,9 @@ class ShopItem extends Model
 		'price',
 		'stock'
 	];
+
+    public function images() 
+    {
+        return $this->hasMany('\App\Models\ItemImages', 'item_id');
+    }
 }
