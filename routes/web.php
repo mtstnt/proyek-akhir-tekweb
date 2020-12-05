@@ -17,8 +17,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [ShopController::class, 'index'])->name("main");
-Route::get('catalog', [ShopController::class, 'displayAll'])->name('main/display');
+Route::get('catalog', [ShopController::class, 'displayAll'])->name('main/catalog');
 Route::get('checkout', [ShopController::class, 'checkout'])->name('main/checkout');
+Route::get('view/{id}', [ShopController::class, 'viewItem']);
 
 Route::prefix('auth')->group(function() {
 	Route::get('/', function() { return redirect()->route("auth/login"); });

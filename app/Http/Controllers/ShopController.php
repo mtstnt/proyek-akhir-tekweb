@@ -31,15 +31,19 @@ class ShopController extends Controller
 		]);
 	}
 
-	// API get
-	public function getItemData($data)
-	{
-		$items = ShopItem::all()->where('id', $data);
+	public function viewItem($id) {
 
-		$itemsJson = $items->toJson();
+		if (!isset($id)) {
+			session()->flash("error", "Item not found!");
+			return redirect('catalog');
+		}
 
-		return response($itemsJson)
-			->header('Content-Type', 'application/json');
+		$item = ShopItem::where('id', '=', $id)-> get('*')->first();
+
+		return view('shop/item', [
+			'title' => $item->item_name,
+			'item' => $item
+		]);
 	}
 
 	// API post

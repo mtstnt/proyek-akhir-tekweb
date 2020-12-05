@@ -56,10 +56,7 @@
     </a>
     <ul class="navbar-nav navbar-collapse d-none d-xl-block" id="to-collapse">
         <li class="nav-item">
-            <a class="nav-link text-dark" href="{{ route('main') }}">Store</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" href="{{ route('main') }}">News & Promo</a>
+            <a class="nav-link text-dark" href="{{ route('main/catalog') }}">Store</a>
         </li>
     </ul>
     <div class="dropdown mx-1">
@@ -92,3 +89,8 @@
         </div>
     </div>
 </nav>
+
+<script>
+	
+
+</script>
