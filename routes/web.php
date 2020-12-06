@@ -17,8 +17,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [ShopController::class, 'index'])->name("main");
-Route::get('catalog', [ShopController::class, 'displayAll'])->name('main/catalog');
+Route::get('/', [ShopController::class, 'displayAll'])->name("main");
+// Route::get('/', function() { return redirect()->route('main/catalog'); });
+// Route::get('catalog', [ShopController::class, 'displayAll'])->name('main');
 Route::get('checkout', [ShopController::class, 'checkout'])->name('main/checkout');
 Route::get('view/{id}', [ShopController::class, 'viewItem']);
 

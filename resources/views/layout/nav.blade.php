@@ -44,19 +44,16 @@
 <nav class="navbar navbar-expand-lg bg-light navbar-light fixed-top">
     <!-- Brand/logo -->
     <a class="navbar-brand" href="{{ route('main') }}">
-        <img src="/storage/common/logo.png" alt="Logo" style="width:80px;height: 50px">
+        <img src="/storage/common/logo.png" alt="Logo" style="width:50px;"">
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#to-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
     <!-- Links -->
-    <a class="nav-link text-dark" href="{{ route('main') }}"
+    <a class="px-0 mx-0 mx-lg-2 px-lg-2nav-link text-dark" href="{{ route('main') }}"
         style="font-size: 30px;font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">
         TOKOBAJU.COM
     </a>
     <ul class="navbar-nav navbar-collapse d-none d-xl-block" id="to-collapse">
         <li class="nav-item">
-            <a class="nav-link text-dark" href="{{ route('main/catalog') }}">Store</a>
+            <a class="nav-link text-dark" href="{{ route('main') }}">Store</a>
         </li>
     </ul>
     <div class="dropdown mx-1">

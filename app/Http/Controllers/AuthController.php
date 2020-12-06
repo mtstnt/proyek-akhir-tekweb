@@ -99,15 +99,17 @@ class AuthController extends Controller
 				'email' => "admin@memeail.com",
 				'password' => "admin123"
 			])) {
-				echo "HAHAH";
+				echo "Failed to login as Guest User. Please consult an Admin.";
 			}
+			return redirect('/');
 		} else {
 			if (!Auth::attempt([
 				'email' => "yolanda.kalim@sudiati.biz",
 				'password' => "12345"
 			])) {
-				echo "HAHAH";
+				echo "Failed to login as Admin. Please consult an Admin (heh?) in real life.";
 			}
+			return redirect('/');
 		}
 	}
 }

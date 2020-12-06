@@ -14,9 +14,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 		// \App\Models\User::factory(10)->create();
-		(new UserSeeder())->run();
+		// (new UserSeeder())->run();
  		//      (new ShopItemSeeder())->run();
         //		(new CartSeeder())->run();
-        // (new ImagesSeeder())->run();
+		// (new ImagesSeeder())->run();
+		(new ItemVariantsSeeder())->run();
     }
 }

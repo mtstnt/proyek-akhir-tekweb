@@ -21,5 +21,10 @@ class ShopItem extends Model
     public function images() 
     {
         return $this->hasMany('\App\Models\ItemImages', 'item_id');
-    }
+	}
+	
+	public function variants() 
+	{
+		return $this->hasMany("\App\Models\ItemVariant", "item_id");
+	}
 }

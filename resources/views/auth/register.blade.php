@@ -15,7 +15,9 @@
 						<input type="text" name="input-email" placeholder=" E-mail " class="form-control mb-3"></td>
 						<input type="password" name="input-password" placeholder=" Password " class="form-control mb-3">
 						</td>
-						<button class="btn btn-warning text-white mt-3" name="register_btn">Register Now</button>
+						<button class="btn m-0 text-white bg-warning font-weight-bold mt-3 w-100"
+							style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;font-size:20px"
+							name="Register">Register</button>
 					</form>
 				</div>
 			</div>

@@ -2,62 +2,65 @@
 
 @section('after-head')
 <style>
-	img {
-		max-width: 100%;
-		max-height: 100%;
+	body {
+		font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+	}
+
+	.card {
+		margin: 22px;
 	}
 </style>
 @endsection
 
 @section('body')
-{{-- 
-	Expects some params:
-	- Item data as queried from ID
---}}
-
-<div class="container-fluid p-0">
-	<a href="{{ url()->previous() }}" class="btn btn-danger">Back</a>
-	<div class="container w-50 mx-auto my-5">
-		<div class="row">
-			<div class="col-12 col-xl-8">
-				<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-					<ol class="carousel-indicators">
-						<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-						<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-						<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-					</ol>
-					<div class="carousel-inner">
-						@for ($i = 0; $i < count($item->images); $i++) :
+<div class="container w-75">
+	<div class="row mt-5 w-75 mx-auto">
+		<div class="col-12 col-lg-6">
+			<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+				<ol class="carousel-indicators">
+					<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+					<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+					<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+				</ol>
+				<div class="carousel-inner">
+					@for ($i = 0; $i < count($item->images); $i++)
 						<div class="carousel-item">
-							<img src="/storage/store/{{ $item->images[$i]->filename }}" class="d-block w-100" alt="...">
+							<img src="/storage/store/{{ $item->images[$i]->filename }}" class="d-block"
+								style="width: 100%" alt="{{ $item->item_name }}">
 						</div>
 						@endfor
-					</div>
-					<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-						<span class="sr-only">Previous</span>
-					</a>
-					<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-						<span class="carousel-control-next-icon" aria-hidden="true"></span>
-						<span class="sr-only">Next</span>
-					</a>
+				</div>
+				<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="sr-only">Previous</span>
+				</a>
+				<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="sr-only">Next</span>
+				</a>
+			</div>
+		</div>
+		<div class="col-12 col-lg-6 p-4">
+			<h1 class="nameItem" style="font-family:Arial, Helvetica, sans-serif">{{ $item->item_name }}</h1>
+			<p>{{ $item->item_description }}</p>
+			<h4 class="item-price text-secondary">{{ $item->price }}</h4>
+			<div class="input-group p-0 my-3">
+				<div class="input-group-prepend">
+					<label class="input-group-text" for="inputGroupSelect01">Size</label>
+					<select class="custom-select w-75" id="inputGroupSelect01">
+						<option selected>Choose...</option>
+						@foreach ($item->variants as $variant)
+						<option value="" {{ $variant->is_available ? "" : "disabled" }}>
+							{{ $variant->variant_name }} {{ $variant->is_available ? "" : "<Unavailable>" }}
+						</option>
+						@endforeach
+					</select>
 				</div>
 			</div>
-			<div class="col-12 col-xl-4">
-				<h1>{{ $item->item_name }} </h1>
-				<h3 class="item-price">{{ $item->price }}</h3>
-				<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis culpa maiores vero commodi sit,
-					ipsam placeat architecto quibusdam fuga beatae labore dolore odit dolores recusandae cum. Quos porro
-					nisi veniam!</p>
-
-				<button class="btn btn-success w-100 mx-0">Add To Cart</button>
-				<button class="btn btn-secondary w-100 mx-0">Ask Seller</button>
-
-			</div>
+			<button href="#" class="mx-0 w-75 btn btn-success">Add To Cart</button>
 		</div>
 	</div>
 </div>
-
 @endsection
 
 @section('after-body')
