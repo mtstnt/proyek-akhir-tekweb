@@ -9,7 +9,21 @@ class AdminController extends Controller
     public function index() {
 
 		return view('admin/index', [
-			'title' => 'Admin Page!'
+			'title' => 'Dashboard'
+		]);
+	}
+
+	public function list() {
+
+		return view('admin/storage', [
+			'title' => 'Storage list'
+		]);
+	}
+
+	public function orders() {
+
+		return view('admin/orders', [
+			'title' => 'Orders'
 		]);
 	}
 }

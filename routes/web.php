@@ -18,8 +18,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [ShopController::class, 'displayAll'])->name("main");
-// Route::get('/', function() { return redirect()->route('main/catalog'); });
-// Route::get('catalog', [ShopController::class, 'displayAll'])->name('main');
 Route::get('checkout', [ShopController::class, 'checkout'])->name('main/checkout');
 Route::get('view/{id}', [ShopController::class, 'viewItem']);
 
@@ -41,5 +39,17 @@ Route::prefix('user')->group(function() {
 });
 
 Route::prefix('admin')->group(function() {
-	Route::get('/', [AdminController::class, "index"])->middleware('admin_only')->name('admin/index');
+	Route::get('/', [AdminController::class, "index"])->middleware('admin_only')->name('admin');
+
+	Route::prefix('list')->group(function() {
+		Route::get('/', [AdminController::class, "list"])->middleware('admin_only')->name('admin/list');
+		Route::get('item-form', [AdminController::class, "addItemForm"])->middleware('admin_only')->name('admin/list/add-item');
+		Route::get('update-form', [AdminController::class, "updateItemForm"])->middleware('admin_only')->name('admin/list/update-item');
+		Route::get('changelog', [AdminController::class, "changeLog"])->middleware('admin_only')->name('admin/list/changelog');
+	});
+
+	Route::prefix('orders')->group(function() {
+		Route::get('/', [AdminController::class, "orders"])->middleware('admin_only')->name('admin/orders');
+		Route::get('pending', [AdminController::class, "orders"])->middleware('admin_only')->name('admin/orders/pending');
+	});
 });
