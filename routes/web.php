@@ -43,9 +43,13 @@ Route::prefix('admin')->group(function() {
 
 	Route::prefix('list')->group(function() {
 		Route::get('/', [AdminController::class, "list"])->middleware('admin_only')->name('admin/list');
-		Route::get('item-form', [AdminController::class, "addItemForm"])->middleware('admin_only')->name('admin/list/add-item');
+		Route::get('add-form', [AdminController::class, "addItemForm"])->middleware('admin_only')->name('admin/list/add-item');
 		Route::get('update-form', [AdminController::class, "updateItemForm"])->middleware('admin_only')->name('admin/list/update-item');
 		Route::get('changelog', [AdminController::class, "changeLog"])->middleware('admin_only')->name('admin/list/changelog');
+
+		Route::post('add-form', [AdminController::class, "addItem"])->middleware('admin_only')->name('admin/list/send-add-item');
+		Route::post('update-form', [AdminController::class, "updateItem"])->middleware('admin_only')->name('admin/list/send-update-item');
+		Route::delete('update-form', [AdminController::class, "deleteItem"])->middleware('admin_only')->name('admin/list/send-delete-item');
 	});
 
 	Route::prefix('orders')->group(function() {

@@ -10,6 +10,8 @@ class ItemImages extends Model
     use HasFactory;
 
 	protected $table = 'item_images';
+
+	public $timestamps = false;
 	
 	public function images()
 	{

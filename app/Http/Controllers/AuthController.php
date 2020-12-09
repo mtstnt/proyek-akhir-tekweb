@@ -37,9 +37,13 @@ class AuthController extends Controller
 		];
 
 		if (Auth::attempt($attemptData)) {
+			if (Auth::user()->role == 1) {
+				return redirect()->route('admin');
+			}
 			return redirect()->intended('/');
         }
-        session()->flash("error", "Incorrect login credentials!");
+		session()->flash("error", "Incorrect login credentials!");
+
 		return redirect()->route('auth/login');
 	}
 
@@ -106,10 +110,10 @@ class AuthController extends Controller
 			if (!Auth::attempt([
 				'email' => "yolanda.kalim@sudiati.biz",
 				'password' => "12345"
-			])) {
-				echo "Failed to login as Admin. Please consult an Admin (heh?) in real life.";
-			}
-			return redirect('/');
+				])) {
+					echo "Failed to login as Admin. Please consult an Admin (heh?) in real life.";
+				}
+			return redirect('/admin');
 		}
 	}
 }
