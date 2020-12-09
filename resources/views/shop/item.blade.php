@@ -18,9 +18,10 @@
 		<div class="col-12 col-lg-6">
 			<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 				<ol class="carousel-indicators">
-					<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-					<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-					<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+					@for ($i = 0; $i < count($item->variants); $i++)
+						<li data-target="#carouselExampleIndicators" data-slide-to="{{ $i }}"
+							class="{{ $i == 0 ? "active" : "" }}"></li>
+					@endfor
 				</ol>
 				<div class="carousel-inner">
 					@for ($i = 0; $i < count($item->images); $i++)
@@ -28,7 +29,7 @@
 							<img src="/storage/store/{{ $item->images[$i]->filename }}" class="d-block"
 								style="width: 100%" alt="{{ $item->item_name }}">
 						</div>
-						@endfor
+					@endfor
 				</div>
 				<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
 					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -50,8 +51,8 @@
 					<select class="custom-select w-75" id="inputGroupSelect01">
 						<option selected>Choose...</option>
 						@foreach ($item->variants as $variant)
-						<option value="" {{ $variant->is_available ? "" : "disabled" }}>
-							{{ $variant->variant_name }} {{ $variant->is_available ? "" : "<Unavailable>" }}
+						<option value="" {{ $variant->stock == 0 ? "disabled class='bg-dark'" : "" }}>
+							{{ $variant->variant_name }} {{ $variant->stock == 0 ? "<Unavailable>" : "" }}
 						</option>
 						@endforeach
 					</select>

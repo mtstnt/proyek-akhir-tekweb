@@ -83,9 +83,9 @@
 </div>
 <div class="container-fluid p-0 mt-4">
 	<div class="row">
-		<div class="col-lg-10 col-12 text-center d-flex flex-wrap">
+		<div class="col-lg-12 justify-content-center col-12 text-center d-flex flex-wrap">
 			@foreach ($items as $item)
-			<div class="card pt-0" style="width: 18rem;">
+			<div class="card pt-0" style="width: 16rem;">
 				{{-- Image --}}
 				@if (count($item->images) > 0)
 				<img class="card-image-top" src="/storage/store/{{ $item->images[0]->filename }}" class="card-img-top"

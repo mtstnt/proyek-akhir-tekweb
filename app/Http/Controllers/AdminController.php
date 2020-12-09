@@ -7,6 +7,7 @@ use App\Models\ItemVariant;
 use App\Models\ShopItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -18,9 +19,16 @@ class AdminController extends Controller
 	}
 
 	public function list() {
+		// Raw db, aman seharusnya karena tdk ada user input
+
+		// select items.id, items.item_name, items.price, items.updated_at, sum(stock) from items join item_variants on items.id = item_variants.item_id group by items.id
+
+		$res = DB::table('items')->select(['items.id', 'items.item_name', 'items.price', 'items.updated_at', DB::raw("sum(stock) as stock")])->join('item_variants', "items.id", "=", "item_variants.item_id")->groupBy(['items.id','items.item_name', 'items.price', 'items.updated_at'])->get();
 
 		return view('admin/storage', [
-			'title' => 'Storage list'
+			'title' => 'Storage list',
+			'items' => $res,
+			'i' => 0
 		]);
 	}
 
@@ -38,8 +46,8 @@ class AdminController extends Controller
 		]);
 	}
 
+	// Function utk save data dari addItemForm
 	public function addItem(Request $request) {
-		// dd($request->allFiles()['input-file-0']->extension());
 		$request->validate([
 			'input-item-name' => 'bail|unique:items,item_name|required',
 			'input-price' => 'required',
@@ -88,4 +96,17 @@ class AdminController extends Controller
 		session()->flash("success", "Successfully added item!");
 		return redirect()->route('admin/list/add-item');
 	}
+
+	public function deleteItem($id) {
+		if (ShopItem::where('id', '=', $id)->delete()) {
+			return json_encode([
+				'status' => "success"
+			]);
+		} else {
+			return json_encode([
+				'status' => "failure"
+			]);
+		}
+	}
 }
+
