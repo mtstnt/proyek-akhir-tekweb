@@ -7,10 +7,12 @@ use App\Models\CartItem;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class UserController extends Controller
 {
-	protected function checkRequestAuthorization(Request $request) {
+	protected function checkRequestAuthorization(Request $request)
+	{
 		$authData = $request->header("Authorization");
 
 		if ($authData == null) {
@@ -56,6 +58,53 @@ class UserController extends Controller
 		return view("user/edit-profile", [
 			'title' => "Edit Profile"
 		]);
+	}
+
+	// Get Request
+	public function checkout()
+	{
+		$response = Http::withOptions([
+			'verify' => false
+		])->withHeaders([
+			'Key' => "d938615fdd53e66c29aa7c3f474e237b",
+			'Content-Type' => 'application/json'
+		])->get("https://api.rajaongkir.com/starter/province");
+
+		// \dd($response->json());
+		return view("user/checkout", [
+			'title' => "Checkout",
+			'provinces' => $response->json()["rajaongkir"]["results"]
+		]);
+	}
+
+	// API get
+	public function getCityID($id) 
+	{
+		$response = Http::withOptions([
+			'verify' => false
+		])->withHeaders([
+			'Key' => "d938615fdd53e66c29aa7c3f474e237b",
+			'Content-Type' => 'application/json'
+		])->get("https://api.rajaongkir.com/starter/city?province=" . $id);
+
+		// \dd($response->json());
+		return response(json_encode($response->json()['rajaongkir']['results']));
+	}
+
+	public function getShippingCost($origin = 444, $destination, $weight) {
+		$response = Http::asForm()->withOptions([
+			'verify' => false
+		])->withHeaders([
+			'Key' => "d938615fdd53e66c29aa7c3f474e237b",
+			'Content-Type' => 'application/x-www-form-urlencoded'
+		])->post("https://api.rajaongkir.com/starter/cost", [
+			'origin' => 444,
+			'destination' => $destination,
+			'weight' => 1000,
+			'courier' => "jne"
+		]);
+
+		return response(json_encode($response->json()['rajaongkir']));
 	}
 
 	// API put
@@ -195,9 +244,9 @@ class UserController extends Controller
 			return;
 		}
 
-		
+
 		$itemToDelete = CartItem::all()->where("cart_id", "=", Auth::user()->cart_id)->where("item_id", "=", $requestArray->get('item_id'))->where("user_id", "=", Auth::user()->id)->first();
-		
+
 		if (!$itemToDelete->delete()) {
 			echo json_encode([
 				'error' => [

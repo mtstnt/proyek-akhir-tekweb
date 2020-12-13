@@ -73,8 +73,8 @@
 	</div>
 	@if($items != null)
 	<div class="d-flex justify-content-center my-4">
-		<button type="button" class="btn btn-info btn-block font-weight-bolder" id="checkOut">Proceed to Check
-			Out</button>
+	<a href="{{ route("user/checkout") }}" class="btn btn-primary w-75" class="btn btn-info btn-block font-weight-bolder" id="checkOut">Proceed to Check
+			Out</a>
 	</div>
 	@endif
 </div>

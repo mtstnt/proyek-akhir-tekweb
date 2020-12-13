@@ -7,10 +7,9 @@ function ajax(url, method, data, header = []) {
 				resolve(xhr.responseText);
 			}
 		}
-		if (header != null) {
-			for (let i of header) {
-				xhr.setRequestHeader(i, header[i]);
-			}
+		console.log(header);
+		for (let i of header) {
+			xhr.setRequestHeader(i.hname, i.hval);
 		}
 		xhr.send(data);
 	});

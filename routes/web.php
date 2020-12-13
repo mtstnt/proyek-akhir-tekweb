@@ -18,8 +18,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [ShopController::class, 'displayAll'])->name("main");
-Route::get('checkout', [ShopController::class, 'checkout'])->name('main/checkout');
 Route::get('view/{id}', [ShopController::class, 'viewItem']);
+Route::get('city/{id}', [UserController::class, 'getCityID']);
+Route::get('getshippingcost/{origin}/{destination}/{weight}', [UserController::class, 'getShippingCost']);
 
 Route::prefix('auth')->group(function() {
 	Route::get('/', function() { return redirect()->route("auth/login"); });
@@ -27,7 +28,7 @@ Route::prefix('auth')->group(function() {
 	Route::get('register', [AuthController::class, "register"])->name("auth/register");
 	Route::get('logout', [AuthController::class, "logout"])->name("auth/logout");
 	Route::get('autologin/{mode}', [AuthController::class, "guestLogin"]);
-
+	
 	Route::post('login', [AuthController::class, "checkLogin"])->name("auth/checkLogin");
 	Route::post('register', [AuthController::class, "checkRegister"])->name("auth/checkRegister");
 });
@@ -38,11 +39,12 @@ Route::prefix('user')->group(function() {
 	Route::get('cart', [UserController::class, "viewCart"])->name("user/cart")->middleware('auth');
 	Route::get('history', [UserController::class, "history"])->name("user/history")->middleware("auth");
 	Route::get('edit-profile', [UserController::class, "editProfile"])->name("user/edit-profile")->middleware("auth");
+	Route::get('checkout', [UserController::class, 'checkout'])->name('user/checkout');
 });
 
 Route::prefix('admin')->group(function() {
 	Route::get('/', [AdminController::class, "index"])->middleware('admin_only')->name('admin');
-
+	
 	Route::prefix('list')->group(function() {
 		Route::get('/', [AdminController::class, "list"])->middleware('admin_only')->name('admin/list');
 		Route::get('add-form', [AdminController::class, "addItemForm"])->middleware('admin_only')->name('admin/list/add-item');

@@ -24,14 +24,6 @@ class ShopController extends Controller
 		]);
 	}
 
-	// Get Request
-	public function checkout()
-	{
-		return view("shop/checkout", [
-			'title' => "Checkout"
-		]);
-	}
-
 	public function viewItem($id) {
 
 		if (!isset($id)) {
