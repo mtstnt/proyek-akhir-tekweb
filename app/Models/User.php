@@ -43,8 +43,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
 	];
 
-	public function carts() 
+	public function cartItems() 
 	{
-		return $this->belongsToMany("App\Models\Cart", "users", "id", "id");
+		return $this->hasMany("App\Models\CartItem", "cart_id", "cart_id");
 	}
 }

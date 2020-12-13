@@ -35,7 +35,9 @@ Route::prefix('auth')->group(function() {
 Route::prefix('user')->group(function() {
 	Route::get('/', function() { return redirect()->route("user/profile"); })->middleware('auth');
     Route::get('profile', [UserController::class, "profile"])->name("user/profile")->middleware('auth');
-    Route::get('cart', [UserController::class, "viewCart"])->name("user/cart")->middleware('auth');
+	Route::get('cart', [UserController::class, "viewCart"])->name("user/cart")->middleware('auth');
+	Route::get('history', [UserController::class, "history"])->name("user/history")->middleware("auth");
+	Route::get('edit-profile', [UserController::class, "editProfile"])->name("user/edit-profile")->middleware("auth");
 });
 
 Route::prefix('admin')->group(function() {

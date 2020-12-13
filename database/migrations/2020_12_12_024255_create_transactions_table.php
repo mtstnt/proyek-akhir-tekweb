@@ -21,7 +21,7 @@ class CreateTransactionsTable extends Migration
 			$table->timestamp("transaction_time")->useCurrent();
 
 			$table->foreign("user_id")->references("id")->on('users')->onDelete("cascade");
-			$table->foreign("cart_id")->references("cart_id")->on('carts')->onDelete("cascade");
+			$table->foreign("cart_id")->references("cart_id")->on('carts_list')->onDelete("cascade");
         });
     }
 

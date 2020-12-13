@@ -5,3 +5,9 @@ itemPrice.forEach(el => {
 	el.innerText = "Rp " + price.toLocaleString('id-ID') + ",00";
 });
 
+function getNumber(localeCurrencyString) {
+    let number = localeCurrencyString.substring(3, localeCurrencyString.length - 3); 
+    number.replaceAll(".", "");
+    console.log(number);
+    return number;
+}

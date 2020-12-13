@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Models;
 
 use DateTime;
@@ -10,13 +11,12 @@ class Cart extends Model
 {
 	use HasFactory;
 	
-	protected $table = "carts";
+    protected $table = "carts_list";
 
-    protected $fillable = [
-		'user_id',
-		'cart_id',
-		'item_id',
-		'stock',
-		'is_checked_out'
-	];
+    public $timestamps = false;
+
+	public function cartItems() 
+	{
+		$this->hasMany("\App\Models\CartItem", "cart_id");
+	}
 }

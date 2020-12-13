@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/items/{id}', [ShopController::class, 'getItemData'])->where('id', '[0-9]+');
 
 // Api endpoint utk push, delete data dari cart
-Route::middleware('auth:api')->post('/cart', [ShopController::class, 'getCartData']);
-Route::middleware('auth:api')->post('/cart', [ShopController::class, 'updateItemCountInCart']);
-Route::middleware('auth:api')->put('/cart', [ShopController::class, 'addItemToCart']);
-Route::middleware('auth:api')->delete('/cart', [ShopController::class, 'removeItemFromCart']);
+Route::get('/cart', [UserController::class, 'getCartItems']);
+Route::post('/cart', [UserController::class, 'updateItemCountInCart']);
+Route::put('/cart', [UserController::class, 'addItemToCart']);
+Route::delete('/cart', [UserController::class, 'removeItemFromCart']);

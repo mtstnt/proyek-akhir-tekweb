@@ -9,28 +9,28 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
 	// Untuk masuk ke AuthController, harus sudah login dulu
-	public function login() 
+	public function login()
 	{
 		return view("auth/login", [
 			'title' => "Login"
 		]);
 	}
 
-	public function register() 
+	public function register()
 	{
 		return view("auth/register", [
 			'title' => "Register"
 		]);
 	}
 
-	public function checkLogin() 
+	public function checkLogin()
 	{
 		$datas = request()->only('input-email', 'input-password');
-		foreach($datas as $k => $d) {
+		foreach ($datas as $k => $d) {
 			$d = str_replace(' ', '', $d);
 			$d = htmlentities($d);
 		}
-        
+
 		$attemptData = [
 			'email' => $datas['input-email'],
 			'password' => $datas['input-password']
@@ -41,13 +41,13 @@ class AuthController extends Controller
 				return redirect()->route('admin');
 			}
 			return redirect()->intended('/');
-        }
+		}
 		session()->flash("error", "Incorrect login credentials!");
 
 		return redirect()->route('auth/login');
 	}
 
-	public function checkRegister() 
+	public function checkRegister()
 	{
 		if (request()->ajax() || request()->isJson()) {
 			return json_encode([
@@ -57,7 +57,7 @@ class AuthController extends Controller
 		}
 
 		$datas = request()->only('input-fname', 'input-lname', 'input-email', 'input-password');
-		foreach($datas as $k => $d) {
+		foreach ($datas as $k => $d) {
 			$d = str_replace(' ', '', $d);
 			$d = htmlentities($d);
 		}
@@ -90,30 +90,36 @@ class AuthController extends Controller
 		return redirect("/");
 	}
 
-	public function logout() 
+	public function logout()
 	{
 		Auth::logout();
 		return redirect('auth/login');
 	}
 
-	public function guestLogin($mode) 
+	public function guestLogin($mode)
 	{
 		if ($mode == 1) {
 			if (!Auth::attempt([
 				'email' => "admin@memeail.com",
 				'password' => "admin123"
 			])) {
-				echo "Failed to login as Guest User. Please consult an Admin.";
+				session()->flash("error", "Failed to login as Admin");
+				return redirect('/auth/login');
 			}
-			return redirect('/');
+			return redirect()->route("admin");
 		} else {
+			$user = User::all()->take(1)->first();
+
 			if (!Auth::attempt([
-				'email' => "yolanda.kalim@sudiati.biz",
+				'email' => $user->email,
 				'password' => "12345"
-				])) {
-					echo "Failed to login as Admin. Please consult an Admin (heh?) in real life.";
-				}
-			return redirect('/admin');
+			])) {
+				session()->flash("error", "Failed to login as Guest User. Please consult an Admin.");
+				return redirect('/auth/login');
+			}
+			
+			return redirect()->route("main");
 		}
+
 	}
 }

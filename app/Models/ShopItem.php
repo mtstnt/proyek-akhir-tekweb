@@ -12,7 +12,6 @@ class ShopItem extends Model
 	protected $table = "items";
 
     protected $fillable = [
-		'item_id',
 		'item_name',
 		'price',
 		'stock'
@@ -26,5 +25,10 @@ class ShopItem extends Model
 	public function variants() 
 	{
 		return $this->hasMany("\App\Models\ItemVariant", "item_id");
-	}
+    }
+
+    public function cartItem() 
+    {
+        return $this->hasMany("\App\Models\CartItem", "item_id", "id");
+    }
 }
