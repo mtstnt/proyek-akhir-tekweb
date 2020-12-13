@@ -95,7 +95,6 @@
 				<div class="card-body">
 					<h5 class="card-title">{{ $item->item_name }}</h5>
 					<p class="item-price">{{ $item->price }}</p>
-					<a href="#" class="btn btn-success align-center w-100">Add To Cart</a>
 					<a href="view/{{ $item->id }}" class="btn btn-primary align-center w-100">View Info</a>
 				</div>
 			</div>

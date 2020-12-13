@@ -99,11 +99,11 @@ class AdminController extends Controller
 
 	public function deleteItem($id) {
 		if (ShopItem::where('id', '=', $id)->delete()) {
-			return json_encode([
+			echo json_encode([
 				'status' => "success"
 			]);
 		} else {
-			return json_encode([
+			echo json_encode([
 				'status' => "failure"
 			]);
 		}
