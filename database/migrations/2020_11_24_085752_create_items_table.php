@@ -19,7 +19,6 @@ class CreateItemsTable extends Migration
 			$table->string('item_name');
 			$table->string('item_description')->nullable();
 			$table->unsignedDouble('price');
-			$table->unsignedInteger('stock');
 			$table->unsignedBigInteger("category_id");
 			$table->string("item_image")->nullable();
 

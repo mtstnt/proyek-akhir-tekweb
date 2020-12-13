@@ -43,7 +43,7 @@ class UserController extends Controller
 	public function viewCart()
 	{
 		$cartItems = Auth::user()->cartItems;
-		
+
 		return view("user/cart", [
 			'title' => "Cart: " . Auth::user()->first_name . " " . Auth::user()->last_name,
 			'items' => $cartItems,
@@ -111,7 +111,6 @@ class UserController extends Controller
 					return;
 				}
 
-				$cartId = $newCart->cart_id;
 				$user = User::find($authDataID);
 				$user->cart_id = $newCart->cart_id;
 				if (!$user->save()) {
@@ -122,11 +121,11 @@ class UserController extends Controller
 					]);
 				}
 			}
-			$cartId = User::find($request->header('Authentication'))->cart_id;
+			$cartId = User::find($authDataID)->cart_id;
 
 			$cartItem = new CartItem();
 			$cartItem->cart_id = $cartId;
-			$cartItem->user_id = Auth::id();
+			$cartItem->user_id = Auth::user()->id;
 			$cartItem->item_id = $requestArray->get('item_id');
 			$cartItem->count = $requestArray->get('count');
 			$cartItem->variant_id = $requestArray->get('variant_id');

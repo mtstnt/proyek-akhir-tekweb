@@ -16,7 +16,9 @@ class AddCardIdForeignToCarts extends Migration
         Schema::table('carts', function (Blueprint $table) {
 			// $table->dropColumn("cart_id");
 			// $table->string("cart_id");
-			$table->foreign("cart_id")->references("cart_id")->on("carts_list")->onDelete("Cascade");
+			$table->unsignedBigInteger("variant_id");
+			$table->foreign("cart_id")->references("cart_id")->on("carts_list")->onDelete("cascade");
+			$table->foreign("variant_id")->references("id")->on("item_variants")->onDelete("cascade");
         });
     }
 

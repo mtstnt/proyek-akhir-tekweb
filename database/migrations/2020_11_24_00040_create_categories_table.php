@@ -19,11 +19,11 @@ class CreateCategoriesTable extends Migration
 			$table->string("category_name");
 		});
 
-		DB::table("categories")->insert(
+		DB::table("categories")->insert([
 			[ 'category_name' => 'Men' ],
 			[ 'category_name' => 'Women' ],
 			[ 'category_name' => 'Kids' ],
-		);
+		]);
     }
 
     /**

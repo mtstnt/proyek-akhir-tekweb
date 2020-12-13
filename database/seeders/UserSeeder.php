@@ -29,17 +29,17 @@ class UserSeeder extends Seeder
 			$user->save();
 		}
 
-		// if (count(User::where('email', '=', 'admin@memeail.com')->take(1)->get('id')) == 0) 
-		// {
-		// 	$user = new User();
-		// 	$user->first_name = "Admin";
-		// 	$user->last_name = "One";
-		// 	$user->password = bcrypt("admin123");
-		// 	$user->email = 'admin@memeail.com';
-		// 	$user->level = 1;
-		// 	$user->credit_points = 0;
-		// 	$user->role = 1;
-		// 	$user->save();
-		// }
+		if (count(User::where('email', '=', 'admin@memeail.com')->take(1)->get('id')) == 0) 
+		{
+			$user = new User();
+			$user->first_name = "Admin";
+			$user->last_name = "One";
+			$user->password = bcrypt("admin123");
+			$user->email = 'admin@memeail.com';
+			$user->level = 1;
+			$user->credit_points = 0;
+			$user->role = 1;
+			$user->save();
+		}
     }
 }

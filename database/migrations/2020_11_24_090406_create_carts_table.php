@@ -18,7 +18,7 @@ class CreateCartsTable extends Migration
 			$table->string('cart_id');
 			$table->unsignedBigInteger('user_id');
 			$table->unsignedBigInteger('item_id');
-			$table->unsignedInteger('stock');
+			$table->unsignedInteger('count');
 			$table->boolean("is_checked_out")->default(false);
 			
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
