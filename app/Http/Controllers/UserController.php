@@ -195,14 +195,30 @@ class UserController extends Controller
 			return;
 		}
 
-		var_dump(Auth::user()->cart_id->cartItems);
+		
+		$itemToDelete = CartItem::all()->where("cart_id", "=", Auth::user()->cart_id)->where("item_id", "=", $requestArray->get('item_id'))->where("user_id", "=", Auth::user()->id)->first();
+		
+		if (!$itemToDelete->delete()) {
+			echo json_encode([
+				'error' => [
+					'message' => "Delete unsuccessful!"
+				]
+			]);
+			return;
+		}
+		echo json_encode([
+			'data' => [
+				'message' => "Delete successful!"
+			]
+		]);
+		return;
 	}
 
 	// API get
 	public function getCartItems(Request $request)
 	{
 		if ($request->ajax()) {
-			$data = $request->header("Authentication");
+			$data = base64_decode($request->header("Authorization"));
 			if ($data == null or !$user = Auth::loginUsingId($data)) {
 				echo json_encode([
 					"error" => [
@@ -212,7 +228,7 @@ class UserController extends Controller
 				return;
 			}
 
-			if ($user->cart == null) {
+			if ($user->cart_id == null) {
 				echo json_encode([
 					"data" => [
 						"items" => null
@@ -221,9 +237,30 @@ class UserController extends Controller
 				return;
 			}
 
+			$items = [];
+
+			$cartItems = CartItem::all()->where('user_id', '=', Auth::user()->id)->where('cart_id', '=', Auth::user()->cart_id);
+			$total = 0;
+			foreach ($cartItems as $it) {
+				array_push($items, [
+					'id' => $it->id,
+					'user_id' => $it->user_id,
+					'cart_id' => $it->cart_id,
+					'count' => $it->count,
+					'variant_id' => $it->variant_id,
+					'item_name' => $it->item->item_name,
+					'image' => $it->item->images[0]->filename,
+					'price' => $it->item->price,
+					'subtotal' => $it->count * $it->item->price
+				]);
+
+				$total += $it->count * $it->item->price;
+			}
+
 			echo json_encode([
 				'data' => [
-					"items" => $user->cart->cartItems
+					"items" => $items,
+					"total" => $total
 				]
 			]);
 			return;
