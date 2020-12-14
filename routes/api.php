@@ -27,4 +27,4 @@ Route::put('/cart', [UserController::class, 'addItemToCart']);
 Route::delete('/cart', [UserController::class, 'removeItemFromCart']);
 
 Route::post('/payment', [PaymentController::class, 'createPayment']);
-Route::post('/savepayment', [PaymentController::class], 'savePayment');
+Route::post('/savepayment', [PaymentController::class, 'savePayment']);

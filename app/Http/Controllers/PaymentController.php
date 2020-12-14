@@ -64,7 +64,8 @@ class PaymentController extends Controller
 		]);
 	}
 
-	public function savePayment(Request $request) {
+	public function savePayment(Request $request)
+	{
 		if (!$request->ajax()) {
 			echo json_encode([
 				'error' => [
@@ -84,11 +85,48 @@ class PaymentController extends Controller
 			return;
 		}
 
-		$cartId = Auth::user()->cart_id;
+		$data = $request->json();
+		$totalPrice = $data->get('total-price');
 
 		// Confirm payment
-		// DB::table('transactions')->insert([
-		// 	''
-		// ]);
+		if (!DB::table('transactions')->insert([
+			'user_id' => Auth::user()->id,
+			'cart_id' => Auth::user()->cart_id,
+			'total_price' => $totalPrice,
+			'status' => "Pending"
+		])) {
+			echo json_encode([
+				'error' => [
+					'message' => "Failed updating transactions"
+				]
+			]);
+			return;
+		}
+
+		if (!DB::table('carts')->where('cart_id', '=', Auth::user()->cart_id)->update([
+			'is_checked_out' => 1
+		])) {
+			echo json_encode([
+				'error' => [
+					'message' => "Failed checking out carts"
+				]
+			]);
+			return;
+		}
+
+		if (!DB::table("users")->where('id', '=', Auth::user()->id)->update([
+			'cart_id' => null
+		])) {
+			echo json_encode([
+				'error' => [
+					'message' => "Failed updating user cart"
+				]
+			]);
+			return;
+		}
+
+		echo json_encode([
+			"success" => true
+		]);
 	}
 }

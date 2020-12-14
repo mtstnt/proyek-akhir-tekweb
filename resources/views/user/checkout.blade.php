@@ -41,7 +41,7 @@
 				<select class="custom-select my-2" name="province" id="province">
 					<option value="-1" selected>Choose..</option>
 					@foreach ($provinces as $p)
-						<option value="{{ $p['province_id'] }}">{{ $p['province']}}</option>
+					<option value="{{ $p['province_id'] }}">{{ $p['province']}}</option>
 					@endforeach
 				</select>
 				<label for="city">Choose city</label>
@@ -51,6 +51,7 @@
 				<h5 class="text-right">Shipping Cost : <span id="shipping-cost" class="item-price">0</span></h5>
 			</div>
 			<h3>Payment Method</h3>
+			<h5 class="text-right">Total Cost : <span id="total-cost">0</span></h5>
 			<select class="custom-select my-3" id="payment-options" name="payment-options">
 				<option value="1">PayPal</option>
 				<option value="2">Manual Payment</option>
@@ -84,6 +85,7 @@
 	src="https://www.paypal.com/sdk/js?client-id=AbZn3M4gGpTXTrRc5zUFz31gnBvQLdPSjL6kptllfvvRQbvRq-TfTsJ7gfRMx9DPDmUyvvUpMpz1wVWR">
 </script>
 <script>
+	let totalPaidPrice;
 	paypal.Buttons({
 		createOrder: async function(data, actions) {
 			const jsonResult = await ajax("{{ url('api/payment') }}", "POST", JSON.stringify({
@@ -100,6 +102,11 @@
 				alert("Error processing transaction!");
 				return;
 			}
+
+			totalPaidPrice = document.getElementById('total-cost').innerText.substring(
+				3,
+				document.getElementById('total-cost').innerText.length - 3
+			).replaceAll('.', '');
 			
 			return actions.order.create({
 				purchase_units: [{
@@ -113,11 +120,15 @@
 			return actions.order.capture()
 				.then( details => {
 					// Call API to save the data
-					ajax("{{ url('api/savepayment') }}", "POST" ,JSON.stringify(details), [
-						{hname: "Content-Type", hval: "application/json"},
-						{hname: "X-Requested-With", hval: "XMLHttpRequest"}
+					ajax("{{ url('api/savepayment') }}", "POST" , JSON.stringify({
+						'details': details,
+						'total-price': totalPaidPrice
+					}), [
+						{ hname: "Content-Type", hval: "application/json" },
+						{ hname: "X-Requested-With", hval: "XMLHttpRequest" },
+						{ hname: "Authorization", hval: btoa({{Auth::user()->id}}) }
 					]).then(val => {
-						if (val == "OK") window.location = "{{ route("user/thankyou") }}";
+						if (JSON.parse(val)['success']) window.location = "{{ route("user/thankyou") }}";
 						else alert("Payment failure!");
 					});
 				});
@@ -152,6 +163,7 @@
 						`;
 					}
 					totalPrice.innerText = response["data"]["total"];
+					updateTotalCost();
 					convertToLocal();
 				}
 			}
@@ -217,15 +229,32 @@
 	city.addEventListener('change', ev => {
 		shippingCost.innerText = "0";
 		convertToLocal();
+
 		if (ev.target.value == -1) {
+			updateTotalCost();
 			return;
 		}
 
 		ajax("{{ url('getshippingcost')}}" + '/444/' + ev.target.value + "/1000", "GET", null).then(val => {
 			const data =  JSON.parse(val);
 			shippingCost.innerText = data.results[0].costs[0].cost[0].value;
+
 			convertToLocal();
+			updateTotalCost();
 		});
 	});
+
+	function updateTotalCost() {
+		const totalCost = document.getElementById('total-cost');
+		const shipCostRp = shippingCost.innerText.substring(3, shippingCost.innerText.length - 3).replaceAll('.', '');
+		let totalPriceRp = 0;
+		if (totalPrice.innerText.includes('Rp'))
+			totalPriceRp =  totalPrice.innerText.substring(3, totalPrice.innerText.length - 3).replaceAll('.', '');
+		else
+			totalPriceRp =  totalPrice.innerText;
+
+		console.log(shipCostRp);
+		totalCost.innerText = "Rp " + (Number(shipCostRp) + Number(totalPriceRp)).toLocaleString('id-ID') + ",00";
+	}
 </script>
 @endsection
