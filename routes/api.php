@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -24,3 +25,6 @@ Route::get('/cart', [UserController::class, 'getCartItems']);
 Route::post('/cart', [UserController::class, 'updateItemCountInCart']);
 Route::put('/cart', [UserController::class, 'addItemToCart']);
 Route::delete('/cart', [UserController::class, 'removeItemFromCart']);
+
+Route::post('/payment', [PaymentController::class, 'createPayment']);
+Route::post('/savepayment', [PaymentController::class], 'savePayment');

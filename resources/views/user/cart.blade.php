@@ -95,7 +95,7 @@
 
 	function deleteOnClick(ev) {
 		ev.preventDefault();
-		const itemID = ev.target.parentNode.parentNode.id;
+		const cartItemID = ev.target.parentNode.parentNode.id;
 		const xhr = new XMLHttpRequest();
 		xhr.open("DELETE", "{{ url('api/cart') }}");
 		xhr.onreadystatechange = () => {
@@ -113,7 +113,7 @@
 		xhr.setRequestHeader("Content-Type", "application/json");
 		xhr.setRequestHeader("Authorization", btoa("{{ Auth::user()->id }}"));
 		xhr.send(JSON.stringify({
-			'item_id': itemID
+			'cartitem_id': cartItemID
 		}));
 	}
 

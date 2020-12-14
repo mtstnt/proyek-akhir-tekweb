@@ -40,6 +40,7 @@ Route::prefix('user')->group(function() {
 	Route::get('history', [UserController::class, "history"])->name("user/history")->middleware("auth");
 	Route::get('edit-profile', [UserController::class, "editProfile"])->name("user/edit-profile")->middleware("auth");
 	Route::get('checkout', [UserController::class, 'checkout'])->name('user/checkout');
+	Route::get('thankyou', [UserController::class, 'thankyouPage'])->name('user/thankyou');
 });
 
 Route::prefix('admin')->group(function() {

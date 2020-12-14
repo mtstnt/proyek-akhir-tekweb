@@ -41,7 +41,6 @@
 				<select class="custom-select my-2" name="province" id="province">
 					<option value="-1" selected>Choose..</option>
 					@foreach ($provinces as $p)
-					{{-- {{ var_dump($p) }} --}}
 						<option value="{{ $p['province_id'] }}">{{ $p['province']}}</option>
 					@endforeach
 				</select>
@@ -86,11 +85,26 @@
 </script>
 <script>
 	paypal.Buttons({
-		createOrder: function(data, actions) {
+		createOrder: async function(data, actions) {
+			const jsonResult = await ajax("{{ url('api/payment') }}", "POST", JSON.stringify({
+				'shipping-cost': document.getElementById('shipping-cost').innerText
+									.substring(3, document.getElementById('shipping-cost').innerText.length - 3).replaceAll('.', '')
+			}), [
+				{ hname: 'Authorization', hval: btoa( {{ Auth::user()->id }} ) },
+				{ hname: 'X-Requested-With', hval: "XMLHttpRequest" }
+			]);
+
+			const result = JSON.parse(jsonResult);
+
+			if (result['error'] != null) {
+				alert("Error processing transaction!");
+				return;
+			}
+			
 			return actions.order.create({
 				purchase_units: [{
 					amount: {
-						value: "10"
+						value: result.data.total,
 					}
 				}]
 			});
@@ -98,7 +112,14 @@
 		onApprove: function(data, actions) {
 			return actions.order.capture()
 				.then( details => {
-					alert("Transaction completed by " + details.payer.name.given_name);
+					// Call API to save the data
+					ajax("{{ url('api/savepayment') }}", "POST" ,JSON.stringify(details), [
+						{hname: "Content-Type", hval: "application/json"},
+						{hname: "X-Requested-With", hval: "XMLHttpRequest"}
+					]).then(val => {
+						if (val == "OK") window.location = "{{ route("user/thankyou") }}";
+						else alert("Payment failure!");
+					});
 				});
 		}
 	}).render("#paypal-btn");

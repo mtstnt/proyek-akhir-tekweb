@@ -77,6 +77,12 @@ class UserController extends Controller
 		]);
 	}
 
+	public function thankyouPage() {
+		return view("user/thankyou", [
+			'title' => "Thank you!"
+		]);
+	}
+
 	// API get
 	public function getCityID($id) 
 	{
@@ -206,7 +212,7 @@ class UserController extends Controller
 	// API delete
 	public function removeItemFromCart(Request $request)
 	{
-		if (!$request->isJson()) {
+		if (!$request->ajax()) {
 			echo json_encode([
 				'error' => [
 					'message' => "Invalid request!"
@@ -235,7 +241,7 @@ class UserController extends Controller
 
 		$requestArray = $request->json();
 
-		if ($requestArray->get("item_id") == null) {
+		if ($requestArray->get("cartitem_id") == null) {
 			echo json_encode([
 				'error' => [
 					'message' => "Invalid fields!"
@@ -245,7 +251,20 @@ class UserController extends Controller
 		}
 
 
-		$itemToDelete = CartItem::all()->where("cart_id", "=", Auth::user()->cart_id)->where("item_id", "=", $requestArray->get('item_id'))->where("user_id", "=", Auth::user()->id)->first();
+		$itemToDelete = CartItem::all()
+			->where("cart_id", "=", Auth::user()->cart_id)
+			->where("id", "=", $requestArray->get('cartitem_id'))
+			->where("user_id", "=", Auth::user()->id)
+			->first();
+
+		if ($itemToDelete == null) {
+			echo json_encode([
+				'error' => [
+					'message' => "Failed to delete item! Item doesn't exist!"
+				]
+			]);
+			return;
+		}
 
 		if (!$itemToDelete->delete()) {
 			echo json_encode([
@@ -266,7 +285,7 @@ class UserController extends Controller
 	// API get
 	public function getCartItems(Request $request)
 	{
-		if ($request->ajax()) {
+		if ($request->isJson()) {
 			$data = base64_decode($request->header("Authorization"));
 			if ($data == null or !$user = Auth::loginUsingId($data)) {
 				echo json_encode([
