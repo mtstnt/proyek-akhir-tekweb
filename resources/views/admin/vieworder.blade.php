@@ -20,7 +20,7 @@
 				@include('admin/flash')
 				<div class="card shadow mb-4">
 					<div class="card-header py-3">
-						<h2 class="m-0 font-weight-bold text-primary">All Items</h2>
+						<h2 class="m-0 font-weight-bold text-primary">All Items in Order</h2>
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
@@ -30,6 +30,7 @@
 										<th>#</th>
 										<th>Item Name</th>
 										<th>Price</th>
+										<th>Variant</th>
 										<th>Quantity</th>
 										<th>Subtotal</th>
 									</tr>
@@ -41,13 +42,14 @@
 										<td class="align-middle">{{ $i++ }}</td>
 										<td class="align-middle">{{ $item->item_name }}</td>
 										<td class="align-middle item-price">{{ $item->price }}</td>
+										<td class="align-middle">{{ $item->variant_name }}</td>
 										<td class="align-middle">{{ $item->count }}</td>
 										<td class="align-middle item-price">{{ $item->count * $item->price }}</td>
 									</tr>
 									@endforeach
 								</tbody>
 								<tfoot>
-									<th colspan="4" class="text-right px-4">Total:</th>
+									<th colspan="5" class="text-right px-4">Total:</th>
 									<th class="item-price">{{ $total }}</th>
 								</tfoot>
 							</table>

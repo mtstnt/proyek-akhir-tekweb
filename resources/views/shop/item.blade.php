@@ -94,7 +94,12 @@
         xhr.open("PUT", "{{ url('api/cart') }}");
         xhr.onreadystatechange = function() {
             if (xhr.status == 200 && xhr.readyState == 4) {
-                alert(xhr.responseText);
+				const result = JSON.parse(xhr.responseText);
+				if (result['error']) {
+					alert(result['error']['message']);
+				} else if (result['data']) {
+					alert("Successfully added item to cart!");
+				}
             }
         }
         xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\ItemVariant;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -241,7 +242,8 @@ class UserController extends Controller
 
 			if (
 				$requestArray->get('item_id') == null 	||
-				$requestArray->get('count') == null
+				$requestArray->get('count') == null 	||
+				$requestArray->get('variant_id') == null 
 			) {
 				echo json_encode([
 					'error' => [
@@ -258,6 +260,19 @@ class UserController extends Controller
 					]
 				]);
 				return;
+			}
+
+			$stockRemaining = ItemVariant::where('id', '=', $requestArray->get('variant_id'))->first();
+
+			if ($stockRemaining != null) {
+				if ($stockRemaining->stock < $requestArray->get('count')) {
+					echo json_encode([
+						'error' => [
+							'message' => "Insufficient stock in storage!"
+						]
+					]);
+					return;
+				}
 			}
 
 			if (!Auth::loginUsingId($authDataID)) {

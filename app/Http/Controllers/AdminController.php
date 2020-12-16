@@ -23,7 +23,7 @@ class AdminController extends Controller
 
 		// select items.id, items.item_name, items.price, items.updated_at, sum(stock) from items join item_variants on items.id = item_variants.item_id group by items.id
 
-		$res = DB::table('items')->select(['items.id', 'items.item_name', 'items.price', 'items.updated_at', DB::raw("sum(stock) as stock")])->join('item_variants', "items.id", "=", "item_variants.item_id")->groupBy(['items.id','items.item_name', 'items.price', 'items.updated_at'])->get();
+		$res = DB::table('items')->select(['items.id', 'item_variants.stock', 'items.item_name', 'items.price', 'items.updated_at', 'item_variants.variant_name'])->join('item_variants', "items.id", "=", "item_variants.item_id")->get();
 
 		return view('admin/storage', [
 			'title' => 'Storage list',
@@ -48,10 +48,11 @@ class AdminController extends Controller
 
 	public function viewOrder($id) {
 		$result = DB::table("transactions")->select([
-			'items.item_name', 'items.price', 'transactions.*', 'carts.count',
+			'items.item_name', 'items.price', 'transactions.*', 'carts.count', 'item_variants.variant_name'
 		])
 		->join('carts', 'carts.cart_id', '=', 'transactions.cart_id')
 		->join('items', 'items.id', '=', 'carts.item_id')
+		->join('item_variants', 'item_variants.id', '=', 'carts.variant_id')
 		->where('transactions.cart_id', '=', $id)
 		->get();
 
@@ -68,33 +69,46 @@ class AdminController extends Controller
 	}
 
 	public function completeOrder(Request $request) {
-
 		if (!$request->ajax()) {
-			echo "FAILED";
+			echo "FAILED NOT AJAX";
 			return;
 		}
 
 		$authID = base64_decode($request->header("Authorization"));
 		if (!Auth::loginUsingId($authID)) {
-			echo "FAILED";
+			echo "FAILED NOT LOGGED IN";
 			return;
 		}
 
 		if (Auth::user()->role != 1) {
-			echo "FAILED";
+			echo "FAILED NOT ADMIN";
 			return;
 		}
+
 		$id = $request->json()->get('id');
 		if ($id == null) {
-			echo "FAILED";
+			echo "FAILED NO ID";
 			return;
 		}
 
 		if (!DB::table("transactions")->where('id', '=', $id)->update([
 			'status' => "Completed"
 		])) {
-			echo "FAILED!";
+			echo "FAILED UPDATE";
 			return;
+		}
+
+		$countOfItems = DB::table('carts')
+			->select('carts.count', 'carts.variant_id', 'item_variants.stock')
+			->join('item_variants', 'item_variants.id', '=', 'carts.variant_id')
+			->join('transactions', 'carts.cart_id', '=', 'transactions.cart_id')
+			->where('transactions.id', '=', $id)->get();
+		
+		foreach ($countOfItems as $c) {
+			DB::table('item_variants')->where('id', '=', $c->variant_id)
+				->update([
+					'stock' => $c->stock - $c->count
+				]);
 		}
 
 		echo "OK";

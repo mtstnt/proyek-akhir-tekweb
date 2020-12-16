@@ -21,7 +21,8 @@
 										<th>#</th>
 										<th>Item Name</th>
 										<th>Price</th>
-										<th>Total Stock</th>
+										<th>Stock</th>
+										<th>Variant</th>
 										<th>Last Updated</th>
 										<th>Actions</th>
 									</tr>
@@ -33,6 +34,7 @@
 										<td class="align-middle">{{ $item->item_name }}</td>
 										<td class="align-middle item-price">{{ $item->price }}</td>
 										<td class="align-middle">{{ $item->stock }}</td>
+										<td class="align-middle">{{ $item->variant_name }}</td>
 										<td class="align-middle">{{ $item->updated_at }}</td>
 										<td class="align-middle">
 											<button class="btn btn-danger delete-btn">Delete</button>
@@ -67,7 +69,7 @@
 	delButton.forEach(el => {
 		el.addEventListener('click', e => {
 			const id = e.target.parentNode.parentNode.id;
-			ajax( "{{ url('admin/list/delete') }}" + "/" id, "GET", null)
+			ajax( "{{ url('admin/list/delete') }}" + "/" + id, "GET", null)
 			.then(val => {
 					const jsonOfVal = JSON.parse(val);
 					if (jsonOfVal['status'] == "success") {
