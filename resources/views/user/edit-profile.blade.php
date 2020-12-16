@@ -36,7 +36,7 @@
 		<h1>Edit Profile</h1>
 	</div>
 	<div class="container">
-		<form action="{{ route("user/save-edit-profile") }}" method="POST">
+		<form action="{{ route("user/save-edit-profile") }}" method="POST" enctype="multipart/form-data">
 			@csrf
 			<div class="form-group">
 				<label for="fname">First Name:</label>
@@ -63,8 +63,25 @@
 				<input type="password" class="form-control" id="edit-password" placeholder="Enter new password"
 					name="edit-password">
 			</div>
+			<div class="form-group">
+				<div class="custom-file">
+					<input type="file" class="custom-file-input input-file" name="edit-avatar" id="edit-avatar">
+					<label class="custom-file-label" id="label-input-file" for="edit-avatar">Choose new avatar</label>
+				</div>
+			</div>
 			<button type="submit" class="btn btn-primary btn-block font-weight-bolder" id="editProfile">Edit</button>
 		</form>
 	</div>
 </div>
+@endsection
+
+@section('after-body')
+<script>
+	const inputFile = document.querySelectorAll('.input-file');
+	inputFile.forEach(el => {
+		el.addEventListener('change', (e) => {
+			document.getElementById('label-input-file').innerText = e.target.files[0].name;
+		});
+	});
+</script>
 @endsection

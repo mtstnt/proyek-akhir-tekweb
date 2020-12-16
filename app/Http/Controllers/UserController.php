@@ -97,7 +97,7 @@ class UserController extends Controller
 
 	public function saveEditProfile(Request $request) 
 	{
-		$user = User::where("id", '=', Auth::user()->id);
+		$user = User::where("id", '=', Auth::user()->id)->first();
 		
 		$is_changing_password = false;
 		
@@ -110,6 +110,28 @@ class UserController extends Controller
 				return redirect()->back();
 			}
 			$is_changing_password = true;
+		}
+
+		if ($request->allFiles('edit-avatar')) {
+			if (in_array($request->file('edit-avatar')->extension(), ["jpg", "jpeg", "png", "webp"])) {
+				$file = $request->file('edit-avatar');
+				
+				$filename = $user->avatar;
+				if ($filename == null) {
+					$filename = uniqid() . "." . $file->extension();
+					if (!$user->update([
+						"avatar" => $filename
+					])) {
+						session()->flash("error", "Failed updating new avatar!");
+						return redirect()->back();
+					}
+				}
+
+				if (!$file->storeAs("public/avatars", $filename)) {
+					session()->flash("error", "Failed storing new avatar!");
+					return redirect()->back();
+				}
+			}
 		}
 
 		if ($is_changing_password) {
