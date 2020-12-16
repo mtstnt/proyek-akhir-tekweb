@@ -37,14 +37,21 @@ Route::prefix('user')->group(function() {
 	Route::get('/', function() { return redirect()->route("user/profile"); })->middleware('auth');
     Route::get('profile', [UserController::class, "profile"])->name("user/profile")->middleware('auth');
 	Route::get('cart', [UserController::class, "viewCart"])->name("user/cart")->middleware('auth');
+	
 	Route::get('history', [UserController::class, "history"])->name("user/history")->middleware("auth");
 	Route::get('edit-profile', [UserController::class, "editProfile"])->name("user/edit-profile")->middleware("auth");
-	Route::get('checkout', [UserController::class, 'checkout'])->name('user/checkout');
-	Route::get('thankyou', [UserController::class, 'thankyouPage'])->name('user/thankyou');
+	Route::get('checkout', [UserController::class, 'checkout'])->name('user/checkout')->middleware('auth');
+	Route::get('thankyou', [UserController::class, 'thankyouPage'])->name('user/thankyou')->middleware('auth');
+	Route::get('history/{id}', [UserController::class, 'viewOldTransaction'])->name('user/historyview')->middleware('auth');
+	Route::post('save-edit-profile', [UserController::class, 'saveEditProfile'])->name('user/save-edit-profile')->middleware('auth');
+	Route::get('cancel/{id}', [UserController::class, 'cancelOrder'])->name("user/cancel")->middleware('auth');
 });
 
 Route::prefix('admin')->group(function() {
-	Route::get('/', [AdminController::class, "index"])->middleware('admin_only')->name('admin');
+	// Route::get('/', [AdminController::class, "index"])->middleware('admin_only')->name('admin');
+	Route::get('/', function () {
+		return redirect()->route('admin/list');
+	})->name('admin');
 	
 	Route::prefix('list')->group(function() {
 		Route::get('/', [AdminController::class, "list"])->middleware('admin_only')->name('admin/list');
@@ -59,6 +66,9 @@ Route::prefix('admin')->group(function() {
 
 	Route::prefix('orders')->group(function() {
 		Route::get('/', [AdminController::class, "orders"])->middleware('admin_only')->name('admin/orders');
-		Route::get('pending', [AdminController::class, "orders"])->middleware('admin_only')->name('admin/orders/pending');
+		Route::get('{id}', [AdminController::class, "viewOrder"])->middleware('admin_only');
+
+		Route::post('complete-order', [AdminController::class, 'completeOrder'])->middleware('admin_only')->name('admin/complete-order');
+		Route::post('cancel-order', [AdminController::class, 'cancelOrder'])->middleware('admin_only')->name('admin/cancel-order');
 	});
 });

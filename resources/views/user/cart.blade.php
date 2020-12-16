@@ -32,7 +32,7 @@
 		<h1>{{ Auth::user()->first_name . " " . Auth::user()->last_name }}'s Shopping Cart</h1>
 	</div>
 	<div class="d-flex justify-content-center my-4 col-lg-11 col-12 mx-auto">
-		<table class="table table-dark table-hover text-center table-bordered" id="main-table">
+		<table class="table table-responsive-sm table-dark table-hover text-center table-bordered" id="main-table">
 			<thead>
 				<tr>
 					<th>#</th>
@@ -73,7 +73,8 @@
 	</div>
 	@if($items != null)
 	<div class="d-flex justify-content-center my-4">
-	<a href="{{ route("user/checkout") }}" class="btn btn-primary w-75" class="btn btn-info btn-block font-weight-bolder" id="checkOut">Proceed to Check
+		<a href="{{ route("user/checkout") }}" class="btn btn-primary w-75"
+			class="btn btn-info btn-block font-weight-bolder" id="checkOut">Proceed to Check
 			Out</a>
 	</div>
 	@endif
@@ -128,22 +129,24 @@
 					alert("ERROR: " + response["error"]["message"]);
 				} else {	
 					tbody.innerHTML = "";
-					for (let d of response["data"]["items"]) {
-						let i = 1;
-						tbody.innerHTML += `
-						<tr id="${d.id}">
-							<td class="align-middle">${i++}</td>
-							<td class="align-middle"><img src="/storage/store/${d.image}" alt="" style="max-height: 200px"></td>
-							<td class="align-middle">${d.item_name}</td>
-							<td class="item-price align-middle">${d.price}</td>
-							<td class="align-middle">${d.count}</td>
-							<td class="subtotal item-price align-middle">${d.subtotal}</td>
-							<td class="align-middle"><button class="btn btn-danger" onclick="deleteOnClick(event)">Delete</button></td>
-						</tr>
-						`;
+					if (response['data']['items'] != null) {
+						for (let d of response["data"]["items"]) {
+							let i = 1;
+							tbody.innerHTML += `
+							<tr id="${d.id}">
+								<td class="align-middle">${i++}</td>
+								<td class="align-middle"><img src="/storage/store/${d.image}" alt="" style="max-height: 200px"></td>
+								<td class="align-middle">${d.item_name}</td>
+								<td class="item-price align-middle">${d.price}</td>
+								<td class="align-middle">${d.count}</td>
+								<td class="subtotal item-price align-middle">${d.subtotal}</td>
+								<td class="align-middle"><button class="btn btn-danger" onclick="deleteOnClick(event)">Delete</button></td>
+							</tr>
+							`;
+						}
+						totalPrice.innerText = response["data"]["total"];
+						convertToLocal();
 					}
-					totalPrice.innerText = response["data"]["total"];
-					convertToLocal();
 				}
 			}
 		}

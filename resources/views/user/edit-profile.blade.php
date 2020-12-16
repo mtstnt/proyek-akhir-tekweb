@@ -17,48 +17,54 @@
 	span {
 		margin-right: 25px;
 	}
-
-	h1:hover,
-	label:hover {
-		color: magenta !important;
-	}
-
-	span:hover {
-		color: powderblue !important;
-	}
-
-	div {
-		font-family: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif";
-	}
 </style>
 @endsection
 
 @section('body')
 <div class="container">
+	@if(session()->get('error') != null)
+	<div class="alert alert-danger my-4">
+		{{ session()->get('error') }}
+	</div>
+	@endif
+	@if(session()->get('success'))
+	<div class="alert alert-success my-4">
+		{{ session()->get('success') }}
+	</div>
+	@endif
 	<div class="d-flex justify-content-center my-4" style="padding-top:15px">
 		<h1>Edit Profile</h1>
 	</div>
 	<div class="container">
 		<form action="{{ route("user/save-edit-profile") }}" method="POST">
+			@csrf
 			<div class="form-group">
 				<label for="fname">First Name:</label>
-				<input type="text" class="form-control" id="fname" placeholder="Enter your first name" name="first">
+				<input type="text" class="form-control" id="edit-first-name" placeholder="Enter your first name"
+					name="edit-first-name" value="{{ $user->first_name }}">
 			</div>
 			<div class="form-group">
 				<label for="lname">Last Name:</label>
-				<input type="text" class="form-control" id="lname" placeholder="Enter your last name" name="last">
+				<input type="text" class="form-control" id="edit-last-name" placeholder="Enter your last name"
+					name="edit-last-name" value="{{ $user->last_name }}">
 			</div>
 			<div class="form-group">
 				<label for="mail">Email:</label>
-				<input type="email" class="form-control" id="mail" placeholder="Enter your email" name="email">
+				<input type="email" class="form-control" id="edit-email" placeholder="Enter your email"
+					name="edit-email" value="{{ $user->email }}">
 			</div>
 			<div class="form-group">
-				<label for="pass">Password:</label>
-				<input type="password" class="form-control" id="pass" placeholder="Enter new password" name="pswd">
+				<label for="pass">Old Password:</label>
+				<input type="password" class="form-control" id="confirm-password" placeholder="Enter old password"
+					name="confirm-password">
 			</div>
-			<button type="submit" class="btn btn-primary btn-block font-weight-bolder" id="editProfile">EDIT</button>
+			<div class="form-group">
+				<label for="pass">New Password:</label>
+				<input type="password" class="form-control" id="edit-password" placeholder="Enter new password"
+					name="edit-password">
+			</div>
+			<button type="submit" class="btn btn-primary btn-block font-weight-bolder" id="editProfile">Edit</button>
 		</form>
 	</div>
-	<br><br>
 </div>
 @endsection

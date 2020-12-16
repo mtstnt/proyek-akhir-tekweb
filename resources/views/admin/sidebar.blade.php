@@ -12,29 +12,10 @@
 	<!-- Divider -->
 	<hr class="sidebar-divider my-0">
 
-	<!-- Nav Item - Dashboard -->
-	<li class="nav-item active">
-		<a class="nav-link" href="{{ route('admin') }}">
-			<i class="fas fa-fw fa-tachometer-alt"></i>
-			<span>Dashboard</span></a>
-	</li>
-
-	<!-- Divider -->
-	<hr class="sidebar-divider">
-
 	<!-- Heading -->
 	<div class="sidebar-heading">
 		Storage Management
 	</div>
-
-	<!-- Nav Item - Pages Collapse Menu -->
-	<li class="nav-item">
-	<a class="nav-link collapsed" href="{{ route("admin/list") }}" >
-			<i class="fas fa-fw fa-cog"></i>
-			<span>List Items</span>
-		</a>
-	</li>
-
 	<!-- Nav Item - Utilities Collapse Menu -->
 	<li class="nav-item">
 		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
@@ -46,9 +27,9 @@
 			data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
 				<h6 class="collapse-header">Storage Management:</h6>
+				<a class="collapse-item" href="{{ route("admin/list") }}">List Items</a>
 				<a class="collapse-item" href="{{ route("admin/list/add-item") }}">Add New Item</a>
-				<a class="collapse-item" href="{{ route("admin/list/update-item") }}">Update Existing Item</a>
-				<a class="collapse-item" href="{{ route("admin/list/changelog") }}">See Changes History</a>
+				{{-- <a class="collapse-item" href="{{ route("admin/list/changelog") }}">See Changes History</a> --}}
 				{{-- <a class="collapse-item" href="{{ route("admin/help") }}">Help</a> --}}
 			</div>
 		</div>
@@ -73,7 +54,6 @@
 			<div class="bg-white py-2 collapse-inner rounded">
 				<h6 class="collapse-header">Transaction Management:</h6>
 				<a class="collapse-item" href={{ route("admin/orders") }}>All Orders</a>
-				<a class="collapse-item" href={{ route("admin/orders/pending") }}>Pending Orders</a>
 			</div>
 		</div>
 	</li>

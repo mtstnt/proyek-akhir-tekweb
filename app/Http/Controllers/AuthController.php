@@ -43,7 +43,6 @@ class AuthController extends Controller
 			return redirect()->intended('/');
 		}
 		session()->flash("error", "Incorrect login credentials!");
-
 		return redirect()->route('auth/login');
 	}
 
@@ -56,7 +55,7 @@ class AuthController extends Controller
 			]);
 		}
 
-		$datas = request()->only('input-fname', 'input-lname', 'input-email', 'input-password');
+		$datas = request()->only('input-fname', 'input-lname', 'input-email', 'input-password', 'confirm-password');
 		foreach ($datas as $k => $d) {
 			$d = str_replace(' ', '', $d);
 			$d = htmlentities($d);
@@ -67,11 +66,22 @@ class AuthController extends Controller
 			return redirect()->route('auth/register');
 		}
 
+		if ($datas['confirm-password'] != $datas['input-password']) {
+			request()->session()->flash("error", "Password and password confirmation doesn't match!");
+			return redirect()->route('auth/register');
+		}
+
+		if (strlen($datas['input-password']) < 5 || strlen($datas['input-password']) >= 15) {
+			request()->session()->flash("error", "Password length must be more than 5 and less than 16 characters");
+			return redirect()->route('auth/register');
+		}
+
 		$newUser = new User([
 			'first_name' => $datas['input-fname'],
 			'last_name' => $datas['input-lname'],
 			'email' => $datas['input-email'],
-			'password' => bcrypt($datas['input-password'])
+			'password' => bcrypt($datas['input-password']),
+			'role' => 0
 		]);
 
 		if (!$newUser->save()) {

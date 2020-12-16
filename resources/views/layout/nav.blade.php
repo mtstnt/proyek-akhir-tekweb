@@ -32,10 +32,6 @@
 		padding: 10px;
 	}
 
-	.dropdown-item:hover {
-        background-color: orange;
-    }
-
 	body {
 		padding-top: 4.8rem;
 	}
@@ -44,12 +40,13 @@
 <nav class="navbar navbar-expand-lg bg-light navbar-light fixed-top">
     <!-- Brand/logo -->
     <a class="navbar-brand" href="{{ route('main') }}">
-        <img src="/storage/common/logo.png" alt="Logo" style="width:50px;"">
+		{{-- <img src="/storage/common/logo.png" alt="Logo" style="width:50px;""> --}}
+		<i style="font-size: 3rem" class="fas fa-laugh-wink"></i>
     </a>
     <!-- Links -->
     <a class="px-0 mx-0 mx-lg-2 px-lg-2nav-link text-dark" href="{{ route('main') }}"
-        style="font-size: 30px;font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">
-        TOKOBAJU.COM
+        style="font-size: 1.5rem;" >
+        Tokobaju.com
     </a>
     <ul class="navbar-nav navbar-collapse d-none d-xl-block" id="to-collapse">
         <li class="nav-item">
@@ -70,19 +67,6 @@
 				<a class="dropdown-item" href="{{ route('auth/login') }}">Login</a>
                 <a class="dropdown-item" href="{{ route('auth/register') }}">Register</a>
             @endif
-        </div>
-    </div>
-
-    <div class="dropdown mr-5">
-        <button class="btn btn-secondary dropdown-toggle bg-white text-dark" type="button" id="dropdownMenuButton"
-            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-search"></i>
-        </button>
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-            <div class="dropdown-item form-inline">
-                <input class="form-control" type="text" placeholder="Search.." name="search">
-                <button class="m-0 btn btn-dark" type="submit"><i class="fa fa-search"></i></button>
-            </div>
         </div>
     </div>
 </nav>

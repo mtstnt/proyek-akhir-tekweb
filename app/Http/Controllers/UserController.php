@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class UserController extends Controller
@@ -37,8 +39,40 @@ class UserController extends Controller
 
 	public function history()
 	{
+		$data = DB::table("transactions")
+			->select(['transactions.id', 'transactions.cart_id', 'transactions.total_price', 'transactions.transaction_time', 'status'])
+			->join("users", "transactions.user_id", '=', "users.id")->where('users.id', '=', Auth::user()->id)->get();
+
 		return view("user/history", [
 			'title' => "History: " . Auth::user()->first_name . " " . Auth::user()->last_name,
+			'transactions' => $data
+		]);
+	}
+
+	public function viewOldTransaction($id) {
+		$transactionInfo = DB::table('transactions')
+			->select([
+				'items.item_name', 'carts.count', 'items.price', 'transactions.cart_id'
+			])
+			->join('carts', 'carts.cart_id', '=', 'transactions.cart_id')
+			->join('items', 'items.id', '=', 'carts.item_id')
+			->where('transactions.id', '=', $id)
+			->where('transactions.user_id', '=', Auth::user()->id)
+			->get();
+
+		if ($transactionInfo == null) {
+			return abort(404);
+		}
+
+		$grandTotal = 0;
+		foreach ($transactionInfo as $t) {
+			$grandTotal += ($t->price * $t->count);
+		}
+
+		return view("user/historyview", [
+			'title' => "Transaction History",
+			'transactionInfo' => $transactionInfo,
+			'grandTotal' => $grandTotal
 		]);
 	}
 
@@ -56,8 +90,72 @@ class UserController extends Controller
 	public function editProfile()
 	{
 		return view("user/edit-profile", [
-			'title' => "Edit Profile"
+			'title' => "Edit Profile",
+			'user' => Auth::user()
 		]);
+	}
+
+	public function saveEditProfile(Request $request) 
+	{
+		$user = User::where("id", '=', Auth::user()->id);
+		
+		$is_changing_password = false;
+		
+		if ($request->input('edit-password') != null) {
+			$beforePassword = password_verify($request->input('confirm-password'), Auth::user()->password);
+			$user->password = $request->input('edit-password');
+
+			if (!$beforePassword) {
+				session()->flash("error", "Wrong old password!");
+				return redirect()->back();
+			}
+			$is_changing_password = true;
+		}
+
+		if ($is_changing_password) {
+			if (!$user->update([
+				"first_name" => $request->input('edit-first-name'),
+				"last_name" => $request->input('edit-last-name'),
+				"email" => $request->input('edit-email'),
+				"password" => bcrypt($request->input("edit-password")),
+			])) {
+				session()->flash("error", "Failed updating!");
+			} else {
+				session()->flash("success", "Successfully updated profile!");
+			}
+		} else {
+			if (!$user->update([
+				"first_name" => $request->input('edit-first-name'),
+				"last_name" => $request->input('edit-last-name'),
+				"email" => $request->input('edit-email'),
+			])) {
+				session()->flash("error", "Failed updating!");
+			} else {
+				session()->flash("success", "Successfully updated profile!");
+			}
+		}
+		return redirect()->back();
+	}
+
+	public function cancelOrder($id) {
+		$transactionToDelete = DB::table("transactions")
+			->where('user_id', '=', Auth::user()->id)
+			->where('id', '=', $id);
+
+		if ($transactionToDelete == null) {
+			session()->flash('error', "Failed canceling order! Specified order doesn't exist!");
+			return redirect()->back();
+		}
+
+		if (!DB::table("transactions")->where('id', '=', $id)->update([
+			'status' => "Canceled"
+		])) {
+			session()->flash('error', "Failed canceling order!");
+			return redirect()->back();
+		}
+
+		session()->flash("success", "Successfully canceled order! Please contact admin for refund!");
+		return \redirect()->back();
 	}
 
 	// Get Request

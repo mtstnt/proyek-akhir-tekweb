@@ -19,15 +19,15 @@
 @endsection
 
 @section('body')
-<div class="container w-75">
-	<div class="row mt-5 w-75 mx-auto">
+<div class="container-fluid p-0 w-75">
+	<div class="row mt-5 col-12 col-lg-9 mx-auto mb-3">
 		<div class="col-12 col-lg-6">
 			<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 				<ol class="carousel-indicators">
-					@for ($i = 0; $i < count($item->variants); $i++)
+					@for ($i = 0; $i < count($item->images); $i++)
 						<li data-target="#carouselExampleIndicators" data-slide-to="{{ $i }}"
 							class="{{ $i == 0 ? "active" : "" }}"></li>
-						@endfor
+					@endfor
 				</ol>
 				<div class="carousel-inner">
 					@for ($i = 0; $i < count($item->images); $i++)
@@ -35,7 +35,7 @@
 							<img src="/storage/store/{{ $item->images[$i]->filename }}" class="d-block"
 								style="width: 100%" alt="{{ $item->item_name }}">
 						</div>
-						@endfor
+					@endfor
 				</div>
 				<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
 					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -84,6 +84,11 @@
 @if (Auth::check())
 <script>
     document.getElementById('add-to-cart').addEventListener('click', ev => {
+		if (document.getElementById("variant_id").value == 0) {
+			alert("Please pick a variant!");
+			return;
+		}
+
         ev.preventDefault();
         const xhr = new XMLHttpRequest();
         xhr.open("PUT", "{{ url('api/cart') }}");

@@ -18,14 +18,6 @@
 		margin-right: 25px;
 	}
 
-	h1:hover {
-		color: magenta !important;
-	}
-
-	span:hover {
-		color: powderblue !important;
-	}
-
 	div {
 		font-family: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif";
 	}
@@ -34,35 +26,52 @@
 
 @section('body')
 <div class="container">
-	<div class="d-flex justify-content-center my-4">
+	@if(session()->get('error') != null)
+	<div class="alert alert-danger my-4">
+		{{ session()->get('error') }}
+	</div>
+	@endif
+	@if(session()->get('success'))
+	<div class="alert alert-success my-4">
+		{{ session()->get('success') }}
+	</div>
+	@endif
+	<div class="text-center my-3">
 		<h1>History</h1>
+		<h6>Click on the Order ID to see order details!</h6>
 	</div>
 	<div class="d-flex justify-content-center my-4">
-		<table class="table table-dark table-hover text-center">
+		<table class="table table-responsive-sm table-dark table-hover text-center">
 			<thead>
 				<tr>
-					<th>Date and Time</th>
-					<th>Items</th>
+					<th>#</th>
+					<th>Order ID</th>
 					<th>Total Price</th>
 					<th>Time of Transaction</th>
+					<th>Status</th>
+					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody id="myHistory">
-				<tr>
-					<td><i>cart id1</i></td>
-					<td>Black Shirt, White Shirt, Orange Shirt</td>
-					<td>60 $</td>
-					<td><i>time of transaction</i></td>
+				@php $i = 1 @endphp
+				{{-- {{ dd($transactions)}} --}}
+				@foreach ($transactions as $t)
+				<tr id="{{ $t->id }}">
+					<td class="align-middle">{{ $i++ }}</td>
+					<td><a class="btn btn-light" href="{{ url("user/history/$t->id") }}">{{ $t->cart_id }}</a></td>
+					<td class="item-price align-middle">{{ $t->total_price }}</td>
+					<td class="align-middle">{{ $t->transaction_time }}</td>
+					<td class="align-middle">{{ $t->status }}</td>
+					<td class="align-middle"><a class="btn btn-danger {{ $t->status == "Completed" ? "disabled" : "" }}"
+							href="{{ url("user/cancel") . "/" . $t->id }}">Cancel</a></td>
 				</tr>
-				<tr>
-					<td><i>cart id2</i></td>
-					<td>Blue Shirt, Grey Shirt, Green Shirt</td>
-					<td>60 $</td>
-					<td><i>time of transaction</i></td>
-				</tr>
+				@endforeach
 			</tbody>
 		</table>
 	</div>
-	<br><br>
 </div>
+@endsection
+
+@section('after-body')
+<script src="{{ url("js/toLocalePrice.js") }}"></script>
 @endsection

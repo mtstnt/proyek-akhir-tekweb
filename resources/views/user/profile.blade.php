@@ -49,10 +49,10 @@
 
 			</div>
 		</div>
-		<div class="row d-flex justify-content-center w-100">
-			<a class="btn btn-primary w-25 mx-5" href="{{ route("user/history") }}">My Transaction History</a>
-			<a class="btn btn-primary w-25 mx-5" href="{{ route("user/edit-profile") }}">Edit Profile</a>
-		</div>
+	</div>
+	<div class="col-12 d-flex justify-content-center flex-row w-100">
+		<a class="btn btn-primary w-25 mx-5" href="{{ route("user/history") }}">My Transaction History</a>
+		<a class="btn btn-primary w-25 mx-5" href="{{ route("user/edit-profile") }}">Edit Profile</a>
 	</div>
 </div>
 @endsection

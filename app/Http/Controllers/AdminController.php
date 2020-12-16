@@ -34,9 +34,102 @@ class AdminController extends Controller
 
 	public function orders() {
 
+		$transactions = DB::table("transactions")->select([
+			'users.first_name', 'users.last_name', 'transactions.*'
+		])
+			->join('users', 'users.id', '=', 'transactions.user_id')
+			->get();
+
 		return view('admin/orders', [
-			'title' => 'Orders'
+			'title' => 'Orders',
+			'transactions' => $transactions
 		]);
+	}
+
+	public function viewOrder($id) {
+		$result = DB::table("transactions")->select([
+			'items.item_name', 'items.price', 'transactions.*', 'carts.count',
+		])
+		->join('carts', 'carts.cart_id', '=', 'transactions.cart_id')
+		->join('items', 'items.id', '=', 'carts.item_id')
+		->where('transactions.cart_id', '=', $id)
+		->get();
+
+		$sum = 0;
+		foreach ($result as $r) {
+			$sum += $r->price * $r->count;
+		}
+
+		return view('admin/vieworder', [
+			'title' => "Orders : " . $id,
+			'items' => $result,
+			'total' => $sum
+		]);
+	}
+
+	public function completeOrder(Request $request) {
+
+		if (!$request->ajax()) {
+			echo "FAILED";
+			return;
+		}
+
+		$authID = base64_decode($request->header("Authorization"));
+		if (!Auth::loginUsingId($authID)) {
+			echo "FAILED";
+			return;
+		}
+
+		if (Auth::user()->role != 1) {
+			echo "FAILED";
+			return;
+		}
+		$id = $request->json()->get('id');
+		if ($id == null) {
+			echo "FAILED";
+			return;
+		}
+
+		if (!DB::table("transactions")->where('id', '=', $id)->update([
+			'status' => "Completed"
+		])) {
+			echo "FAILED!";
+			return;
+		}
+
+		echo "OK";
+	}
+
+	public function cancelOrder(Request $request) {
+		if (!$request->ajax()) {
+			echo "FAILED";
+			return;
+		}
+
+		$authID = base64_decode($request->header("Authorization"));
+		if (!Auth::loginUsingId($authID)) {
+			echo "FAILED";
+			return;
+		}
+
+		if (Auth::user()->role != 1) {
+			echo "FAILED";
+			return;
+		}
+		$id = $request->json()->get('id');
+		if ($id == null) {
+			echo "FAILED";
+			return;
+		}
+
+		if (!DB::table("transactions")->where('id', '=', $id)->update([
+			'status' => "Cancelled"
+		])) {
+			echo "FAILED!";
+			return;
+		}
+
+		echo "OK";
 	}
 
 	public function addItemForm() {

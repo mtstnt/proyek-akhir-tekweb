@@ -3,18 +3,12 @@
 @section("body")
 <br>
 <div class="container">
-	<div class="row">
-		<div class="col-sm-4 text-center">
-			<a href="#" class="btn btn-secondary" role="button">return to store</a>
+	<div class="row mb-3">
+		<div class="col-12 text-center">
+			<h1 class="display-4">Checkout</h1>
 		</div>
-		<div class="col-sm-4 text-center">
-			<h2 class="font-weight-bolder">Matthew Store</h2>
-		</div>
-		<div class="col-sm-4"></div>
 	</div>
-	<br>
-	<p class="bg-dark text-dark">test</p>
-	<br>
+	
 	<div class="row">
 		<div class="col-lg-5 col-12">
 			<h3>Order Summary</h3>
@@ -58,21 +52,8 @@
 			</select>
 			<div id="payment-form">
 				<div id="paypal-btn"></div>
-				<div id="manual-payment" class="d-none">Manual</div>
+				<div id="manual-payment" class="d-none">Sorry, manual payment is currently unavailable</div>
 			</div>
-
-			{{-- <div class="form-group">
-					<label for="email">CARD NUMBER:</label>
-					<input type="email" class="form-control" id="email" placeholder="Enter your card number"
-						name="email">
-				</div>
-				<div class="form-group">
-					<label for="pwd">PASSWORD:</label>
-					<input type="password" class="form-control" id="pwd" placeholder="Enter your password to verify"
-						name="pswd">
-				</div> --}}
-
-			{{-- <input type="submit" class="btn btn-warning btn-block mx-0" value="Order and Pay"> --}}
 		</div>
 	</div>
 </div>
@@ -82,7 +63,7 @@
 @section('after-body')
 <script src="{{ url("js/ajaxHelper.js") }}"></script>
 <script
-	src="https://www.paypal.com/sdk/js?client-id=AbZn3M4gGpTXTrRc5zUFz31gnBvQLdPSjL6kptllfvvRQbvRq-TfTsJ7gfRMx9DPDmUyvvUpMpz1wVWR">
+	src="https://www.paypal.com/sdk/js?client-id=AbZn3M4gGpTXTrRc5zUFz31gnBvQLdPSjL6kptllfvvRQbvRq-TfTsJ7gfRMx9DPDmUyvvUpMpz1wVWR&disable-funding=credit,card">
 </script>
 <script>
 	let totalPaidPrice;

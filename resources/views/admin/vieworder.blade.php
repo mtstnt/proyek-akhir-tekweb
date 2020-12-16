@@ -4,10 +4,19 @@
 <div id="wrapper">
 
 	@include('admin/sidebar')
+
+	<!-- Content Wrapper -->
 	<div id="content-wrapper" class="d-flex flex-column">
+
+		<!-- Main Content -->
 		<div id="content">
+
+			<!-- Topbar -->
 			@include('admin/nav')
+
+			<!-- Begin Page Content -->
 			<div class="container-fluid">
+
 				@include('admin/flash')
 				<div class="card shadow mb-4">
 					<div class="card-header py-3">
@@ -21,30 +30,30 @@
 										<th>#</th>
 										<th>Item Name</th>
 										<th>Price</th>
-										<th>Total Stock</th>
-										<th>Last Updated</th>
-										<th>Actions</th>
+										<th>Quantity</th>
+										<th>Subtotal</th>
 									</tr>
 								</thead>
 								<tbody>
+									@php $i = 1; @endphp
 									@foreach ($items as $item)
-									<tr id="{{ $item->id }}">
-										<td class="align-middle">{{ ++$i }}</td>
+									<tr>
+										<td class="align-middle">{{ $i++ }}</td>
 										<td class="align-middle">{{ $item->item_name }}</td>
 										<td class="align-middle item-price">{{ $item->price }}</td>
-										<td class="align-middle">{{ $item->stock }}</td>
-										<td class="align-middle">{{ $item->updated_at }}</td>
-										<td class="align-middle">
-											<button class="btn btn-danger delete-btn">Delete</button>
-										</td>
+										<td class="align-middle">{{ $item->count }}</td>
+										<td class="align-middle item-price">{{ $item->count * $item->price }}</td>
 									</tr>
 									@endforeach
 								</tbody>
+								<tfoot>
+									<th colspan="4" class="text-right px-4">Total:</th>
+									<th class="item-price">{{ $total }}</th>
+								</tfoot>
 							</table>
 						</div>
 					</div>
 				</div>
-
 			</div>
 		</div>
 	</div>
@@ -61,24 +70,5 @@
 <script src={{url("js/demo/datatables-demo.js")}}></script>
 <script src="{{ url('js/toLocalePrice.js') }}"></script>
 <script src="{{ url('js/ajaxHelper.js') }}"></script>
-<script>
-	const delButton = document.querySelectorAll('.delete-btn');
 
-	delButton.forEach(el => {
-		el.addEventListener('click', e => {
-			const id = e.target.parentNode.parentNode.id;
-			ajax( "{{ url('admin/list/delete') }}" + "/" id, "GET", null)
-			.then(val => {
-					const jsonOfVal = JSON.parse(val);
-					if (jsonOfVal['status'] == "success") {
-						alert("Successfully deleted id " + id);
-						window.location.reload();
-					}
-					else {
-						alert("Failed deleting id " + id);
-					}
-				}); // then
-			}); // addEventListener 
-	});
-</script>
 @endsection

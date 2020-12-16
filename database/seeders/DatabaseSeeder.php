@@ -15,8 +15,5 @@ class DatabaseSeeder extends Seeder
 	{
 		// \App\Models\User::factory(10)->create();
 		(new UserSeeder())->run();
-		// (new ShopItemSeeder())->run();
-		// (new ImagesSeeder())->run();
-		// (new ItemVariantsSeeder())->run();
 	}
 }
