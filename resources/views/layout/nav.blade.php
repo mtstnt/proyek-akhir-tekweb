@@ -45,8 +45,8 @@
     </a>
     <!-- Links -->
     <a class="px-0 mx-0 mx-lg-2 px-lg-2nav-link text-dark" href="{{ route('main') }}"
-        style="font-size: 1.5rem;" >
-        Tokobaju.com
+        style="font-size: 1.5rem; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif" >
+        Tokobaju
     </a>
     <ul class="navbar-nav navbar-collapse d-none d-xl-block" id="to-collapse">
         <li class="nav-item">

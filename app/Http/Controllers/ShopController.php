@@ -19,7 +19,7 @@ class ShopController extends Controller
 	public function displayAll() {
 		$items = ShopItem::all();
 		return view('shop/display', [
-			'title' => "Shop catalog",
+			'title' => "Tokobaju",
 			'items' => $items
 		]);
 	}

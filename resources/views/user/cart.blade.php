@@ -45,25 +45,6 @@
 				</tr>
 			</thead>
 			<tbody id="myItems">
-				@if ($items == null)
-				<tr>
-					<td colspan="999">You currently have no items in cart!<br>
-						<a href="{{ route("main") }}">Shop something!</a></td>
-				</tr>
-				@else
-				{{-- @foreach ($items as $item)
-				<tr id="{{ $item->id }}">
-				<td class="align-middle">{{ $i++ }}</td>
-				<td class="align-middle"><img src="/storage/store/{{ $item->item->images[0]->filename }}" alt=""
-						style="max-height: 200px"></td>
-				<td class="align-middle">{{ $item->item->item_name }}</td>
-				<td class="item-price align-middle">{{ $item->item->price }}</td>
-				<td class="align-middle">{{ $item->count }}</td>
-				<td class="subtotal item-price align-middle">{{ $item->item->price * $item->count }}</td>
-				<td class="align-middle"><button class="btn btn-danger" id="delete-cart-item">Delete</button></td>
-				</tr>
-				@endforeach --}}
-				@endif
 			</tbody>
 			<tfoot>
 				<th colspan="5">Total</th>
@@ -79,9 +60,6 @@
 	</div>
 	@endif
 </div>
-
-
-@include("layout/footer")
 
 @endsection
 
